@@ -11,10 +11,10 @@ export const RootLayout: React.FC = () => {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
           <div className="flex items-center gap-6">
             <NavLink to="/" className="flex items-center gap-2">
-              <span className="h-6 w-6 rounded-md bg-blue-600 font-bold text-white flex items-center justify-center text-xs">
+              <span className="h-7 w-7 rounded-lg bg-blue-600 font-black text-white flex items-center justify-center text-sm shadow-xs">
                 M
               </span>
-              <span className="font-bold text-slate-900 tracking-tight">MediKiosk</span>
+              <span className="font-black text-lg text-slate-900 tracking-tight">MediKiosk</span>
             </NavLink>
             <nav className="flex items-center gap-1">
               <NavLink
@@ -26,6 +26,16 @@ export const RootLayout: React.FC = () => {
                 }
               >
                 Home
+              </NavLink>
+              <NavLink
+                to="/patient/mobile"
+                className={({ isActive }) =>
+                  `rounded-md px-3 py-1.5 text-sm font-semibold transition ${
+                    isActive ? 'bg-blue-100 text-blue-800' : 'text-blue-600 hover:bg-blue-50'
+                  }`
+                }
+              >
+                Patient Check-In
               </NavLink>
               <NavLink
                 to="/system"
@@ -71,7 +81,7 @@ export const RootLayout: React.FC = () => {
       </main>
 
       <footer className="border-t border-slate-200 bg-white py-4 text-center text-xs text-slate-500">
-        MediKiosk Staff Portal &copy; 2026
+        MediKiosk Intelligent Healthcare Intake &copy; 2026
       </footer>
     </div>
   )

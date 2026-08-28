@@ -12,9 +12,9 @@
     "semantic_hash": ""
   },
   ".claude/settings.json": {
-    "mtime": 1787921462.0256147,
-    "seen": 1787923944.5648446,
-    "ast_hash": "17728413dd02a479d95c847e6b803f2d",
+    "mtime": 1787934643.07711,
+    "seen": 1787936338.69345,
+    "ast_hash": "ea9ceffaad575132eea279f7d03cd6b0",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -102,9 +102,9 @@
     "semantic_hash": ""
   },
   "backend/app/api/v1/router.py": {
-    "mtime": 1787925219.4623697,
-    "seen": 1787925480.0930624,
-    "ast_hash": "abe4be6c647d528749fa221fd070b1ea",
+    "mtime": 1787933469.754841,
+    "seen": 1787934059.667484,
+    "ast_hash": "5b3510fee6127ffa7d863099a9217522",
     "semantic_hash": ""
   },
   "backend/app/core/__init__.py": {
@@ -114,9 +114,9 @@
     "semantic_hash": ""
   },
   "backend/app/core/config.py": {
-    "mtime": 1787925266.0206742,
-    "seen": 1787925480.0930638,
-    "ast_hash": "bf9c67026e0c518c9eceeee5ea203358",
+    "mtime": 1787933469.7419436,
+    "seen": 1787934059.667489,
+    "ast_hash": "8d56d9ee558b31acdee93de58bc6ee4e",
     "semantic_hash": ""
   },
   "backend/app/core/exceptions.py": {
@@ -150,15 +150,15 @@
     "semantic_hash": ""
   },
   "backend/app/main.py": {
-    "mtime": 1787918641.3333766,
-    "seen": 1787920097.2797084,
-    "ast_hash": "04c14eee6497629596308ebc0f5edd3d",
+    "mtime": 1787935993.5365996,
+    "seen": 1787936338.6935532,
+    "ast_hash": "fa0da95665928abba0f40d54acf6d0fd",
     "semantic_hash": ""
   },
   "backend/app/models/__init__.py": {
-    "mtime": 1787925219.4572945,
-    "seen": 1787925480.093073,
-    "ast_hash": "50336f8e4cd072b4cde2b83077581d06",
+    "mtime": 1787933469.7419436,
+    "seen": 1787934059.6675131,
+    "ast_hash": "56c3b567065abc09afabbf131e446a1b",
     "semantic_hash": ""
   },
   "backend/app/schemas/__init__.py": {
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   "frontend/src/layouts/RootLayout.tsx": {
-    "mtime": 1787926356.4870114,
-    "seen": 1787926401.7341383,
-    "ast_hash": "e7a01fa1c833e58443faa6d0adc09cfd",
+    "mtime": 1787933896.1782427,
+    "seen": 1787934059.6676302,
+    "ast_hash": "9aec9aa555807bad6a47b902a15c7dd6",
     "semantic_hash": ""
   },
   "frontend/src/main.tsx": {
@@ -252,9 +252,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/HomePage.tsx": {
-    "mtime": 1787919037.194219,
-    "seen": 1787920097.2797258,
-    "ast_hash": "7b071a07e3022f30e05a5daccc394fa9",
+    "mtime": 1787933896.1782427,
+    "seen": 1787934059.667635,
+    "ast_hash": "a883240cd32833fd291ebf459e5a35dc",
     "semantic_hash": ""
   },
   "frontend/src/pages/NotFoundPage.tsx": {
@@ -270,15 +270,15 @@
     "semantic_hash": ""
   },
   "frontend/src/routes/AppRoutes.tsx": {
-    "mtime": 1787925407.4171467,
-    "seen": 1787925480.0931034,
-    "ast_hash": "b7ffe2d250efd8025692c1a2dea8753a",
+    "mtime": 1787933896.1782427,
+    "seen": 1787934059.6676521,
+    "ast_hash": "5d49a9af37bd32f4d42b7aaa4ae3e881",
     "semantic_hash": ""
   },
   "frontend/src/services/apiClient.ts": {
-    "mtime": 1787926164.7729492,
-    "seen": 1787926187.2093155,
-    "ast_hash": "9549912236b341f96fd085eb01b8595c",
+    "mtime": 1787935776.4490657,
+    "seen": 1787936338.693692,
+    "ast_hash": "3b684d78ca6d792b8a16a79a292c7642",
     "semantic_hash": ""
   },
   "frontend/src/types/api.ts": {
@@ -522,9 +522,9 @@
     "semantic_hash": ""
   },
   "frontend/src/stores/index.ts": {
-    "mtime": 1787926621.2763746,
-    "seen": 1787926838.6165218,
-    "ast_hash": "41058c792138571d87bfb9f938e5dd9a",
+    "mtime": 1787933896.1750233,
+    "seen": 1787934059.6676571,
+    "ast_hash": "2bda23ce4ba66fd55312e998432722dd",
     "semantic_hash": ""
   },
   "frontend/src/stores/useSystemStore.ts": {
@@ -534,9 +534,183 @@
     "semantic_hash": ""
   },
   "frontend/src/types/index.ts": {
-    "mtime": 1787926356.4838247,
-    "seen": 1787926401.7341707,
-    "ast_hash": "df9dbb80ddfc5e5ff28050544ac19c0b",
+    "mtime": 1787933896.167915,
+    "seen": 1787934059.6676722,
+    "ast_hash": "152e142be0aa5cb18bc2bc359bb0ac79",
+    "semantic_hash": ""
+  },
+  "backend/alembic/versions/0003_patient_identity_schema.py": {
+    "mtime": 1787933469.7458682,
+    "seen": 1787934059.667444,
+    "ast_hash": "9443fd96cea508f03fbd98decacd07c8",
+    "semantic_hash": ""
+  },
+  "backend/app/api/v1/endpoints/identity.py": {
+    "mtime": 1787933469.754841,
+    "seen": 1787934059.6674783,
+    "ast_hash": "a3cfbdc5b5f14230ca5fb9ba8c7df3d4",
+    "semantic_hash": ""
+  },
+  "backend/app/api/v1/endpoints/patients.py": {
+    "mtime": 1787933469.752807,
+    "seen": 1787934059.6674805,
+    "ast_hash": "0ebfba5278ec866ee6e2bb19e0ad3acd",
+    "semantic_hash": ""
+  },
+  "backend/app/models/face_enrollment.py": {
+    "mtime": 1787933469.7419436,
+    "seen": 1787934059.6675153,
+    "ast_hash": "9949d98444430bd53c4be60c996c8d34",
+    "semantic_hash": ""
+  },
+  "backend/app/models/patient.py": {
+    "mtime": 1787933469.7419436,
+    "seen": 1787934059.6675177,
+    "ast_hash": "a0e452bc08bb6023a7ab8eb5e5b1192d",
+    "semantic_hash": ""
+  },
+  "backend/app/models/patient_identifier.py": {
+    "mtime": 1787933469.7419436,
+    "seen": 1787934059.66752,
+    "ast_hash": "d9f7ba768ca51ca71149541244b830b3",
+    "semantic_hash": ""
+  },
+  "backend/app/schemas/identity.py": {
+    "mtime": 1787933469.7465942,
+    "seen": 1787934059.6675334,
+    "ast_hash": "08b428157587005116eb35fb5f6ffd55",
+    "semantic_hash": ""
+  },
+  "backend/app/schemas/patient.py": {
+    "mtime": 1787933469.7465942,
+    "seen": 1787934059.6675355,
+    "ast_hash": "a7c4fdafa8b679ef88596fc1d05bdb1c",
+    "semantic_hash": ""
+  },
+  "backend/app/services/face/__init__.py": {
+    "mtime": 1787933469.752807,
+    "seen": 1787934059.667553,
+    "ast_hash": "457a51759b367050a23a727e05a834e6",
+    "semantic_hash": ""
+  },
+  "backend/app/services/face/base.py": {
+    "mtime": 1787933469.7465942,
+    "seen": 1787934059.6675553,
+    "ast_hash": "4a50419a978b55f43047d04b3bd61add",
+    "semantic_hash": ""
+  },
+  "backend/app/services/face/insightface_service.py": {
+    "mtime": 1787933469.752807,
+    "seen": 1787934059.6675575,
+    "ast_hash": "c3d61f85de1720480fa431b95eb07c94",
+    "semantic_hash": ""
+  },
+  "backend/app/services/identity/__init__.py": {
+    "mtime": 1787933469.7465942,
+    "seen": 1787934059.6675596,
+    "ast_hash": "ea8bc49f4d491da7e6bff4e06994611f",
+    "semantic_hash": ""
+  },
+  "backend/app/services/identity/base.py": {
+    "mtime": 1787933469.7465942,
+    "seen": 1787934059.6675615,
+    "ast_hash": "22ea180d9bc75195fddc65eedb552c9f",
+    "semantic_hash": ""
+  },
+  "backend/app/services/identity/mobile_provider.py": {
+    "mtime": 1787933469.7465942,
+    "seen": 1787934059.6675634,
+    "ast_hash": "296b1097ede42749467a37a795cd22c4",
+    "semantic_hash": ""
+  },
+  "backend/app/services/patient_service.py": {
+    "mtime": 1787933469.752807,
+    "seen": 1787934059.6675653,
+    "ast_hash": "a4d5a5ee781a73be6b18182c37b70f55",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_identity_face.py": {
+    "mtime": 1787933833.3196223,
+    "seen": 1787934059.6676085,
+    "ast_hash": "d051586c3853c0e99f943da4a7293adc",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_patients.py": {
+    "mtime": 1787933833.3196223,
+    "seen": 1787934059.667611,
+    "ast_hash": "a58f263d990bb5f6827c0e000752d172",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/patient/FacePage.tsx": {
+    "mtime": 1787935889.3630972,
+    "seen": 1787936338.6936812,
+    "ast_hash": "963e37b712fb29d02f82e166f9a12372",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/patient/MobilePage.tsx": {
+    "mtime": 1787935920.127011,
+    "seen": 1787936338.6936836,
+    "ast_hash": "29589548e6b195de74df7e361c78f3ad",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/patient/RegisterPage.tsx": {
+    "mtime": 1787933896.1750233,
+    "seen": 1787934059.6676493,
+    "ast_hash": "756a0252af7e0a6bf563ef7acd7a7369",
+    "semantic_hash": ""
+  },
+  "frontend/src/stores/usePatientStore.ts": {
+    "mtime": 1787933896.1750233,
+    "seen": 1787934059.6676621,
+    "ast_hash": "7ce9ee47f9766a75abc2a3acc449fdb8",
+    "semantic_hash": ""
+  },
+  "frontend/src/types/patient.ts": {
+    "mtime": 1787933896.167915,
+    "seen": 1787934059.667674,
+    "ast_hash": "0c45a61a15aed24c0a08ff854195460c",
+    "semantic_hash": ""
+  },
+  "backend/tests/fixtures/blank.jpg": {
+    "mtime": 1787933833.3196223,
+    "seen": 1787934059.6677363,
+    "ast_hash": "40a89bf2f6a30431f34faf4bc89b04d9",
+    "semantic_hash": ""
+  },
+  "backend/tests/fixtures/face_a.jpg": {
+    "mtime": 1787933490.0534682,
+    "seen": 1787934059.6677387,
+    "ast_hash": "e649f99b7297d95eee200485d5095cf7",
+    "semantic_hash": ""
+  },
+  "backend/tests/fixtures/face_a.png": {
+    "mtime": 1787933691.9154668,
+    "seen": 1787934059.6677406,
+    "ast_hash": "ce0715b3b1c0444afdb9409f87174182",
+    "semantic_hash": ""
+  },
+  "backend/tests/fixtures/face_b.jpg": {
+    "mtime": 1787933691.922565,
+    "seen": 1787934059.6677427,
+    "ast_hash": "952228955e864d7e075a38f7c6d0a47e",
+    "semantic_hash": ""
+  },
+  "backend/tests/fixtures/person_a_frame1.jpg": {
+    "mtime": 1787933833.312585,
+    "seen": 1787934059.667745,
+    "ast_hash": "70ddb678d2b8b8a183119b7f134cca51",
+    "semantic_hash": ""
+  },
+  "backend/tests/fixtures/person_a_frame2.jpg": {
+    "mtime": 1787933833.3176117,
+    "seen": 1787934059.6677473,
+    "ast_hash": "14d48628730c48f3dc50b09c36a1be7b",
+    "semantic_hash": ""
+  },
+  "backend/tests/fixtures/person_b.jpg": {
+    "mtime": 1787933833.3176117,
+    "seen": 1787934059.6677494,
+    "ast_hash": "2a0ad89151cfd177478cb61a6c8f533b",
     "semantic_hash": ""
   }
 }

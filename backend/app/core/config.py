@@ -31,11 +31,16 @@ class Settings(BaseSettings):
     # --- CORS ---
     BACKEND_CORS_ORIGINS: str = "http://localhost:5173"
 
-    # --- Authentication & JWT ---
+    # --- Authentication & JWT (Staff) ---
     JWT_SECRET_KEY: str = "dev_insecure_jwt_secret_key_change_in_production"
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+
+    # --- Biometric Face Recognition (Phase 3) ---
+    FACE_MODEL_NAME: str = "buffalo_l"
+    FACE_SIMILARITY_THRESHOLD: float = 0.50
+    FACE_DETECTION_SIZE: int = 640
 
     @property
     def cors_origins(self) -> list[str]:

@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+﻿import axios, { AxiosError } from 'axios'
 import { env } from '../config/env'
 
 export const TOKEN_KEY = 'medikiosk_access_token'
@@ -18,7 +18,7 @@ export const apiClient = axios.create({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  timeout: 15000,
+  timeout: 45000, // Face verification via InsightFace ArcFace on CPU can take up to 25s
 })
 
 // Request Interceptor: Attach JWT Token from storage
@@ -53,3 +53,4 @@ apiClient.interceptors.response.use(
 )
 
 export default apiClient
+

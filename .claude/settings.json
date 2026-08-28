@@ -1,29 +1,12 @@
-{
-    "modelOverrides":  {
-                           "haiku":  "qwen3.5:9b",
-                           "claude-3-5-haiku-latest":  "qwen3.5:9b",
-                           "claude-3-5-sonnet-latest":  "qwen3.5:9b",
-                           "claude-opus-5":  "qwen3.5:9b",
-                           "sonnet":  "qwen3.5:9b",
-                           "claude-sonnet-5":  "qwen3.5:9b",
-                           "claude-opus-5[1m]":  "qwen3.5:9b",
-                           "claude-sonnet-4-6":  "qwen3.5:9b",
-                           "claude-3-7-sonnet-latest":  "qwen3.5:9b",
-                           "claude-haiku-4-6":  "qwen3.5:9b",
-                           "claude-haiku-5":  "qwen3.5:9b"
-                       },
-    "availableModels":  [
-                            "qwen3.5:9b",
-                            "qwen2.5-coder:32b"
-                        ],
-    "env":  {
-                "ANTHROPIC_AUTH_TOKEN":  "ollama",
-                "ANTHROPIC_MODEL":  "qwen3.5:9b",
-                "ANTHROPIC_API_KEY":  "",
-                "CLAUDE_CODE_DISABLE_UNKNOWN_MODEL_WINDOW_ENFORCEMENT":  "1",
-                "ANTHROPIC_BASE_URL":  "http://localhost:11434"
-            },
-    "autoUpdatesChannel":  "latest",
-    "model":  "qwen3.5:9b",
-    "theme":  "dark"
+﻿{
+  "theme": "dark",
+  "model": "gemma4:26b",
+  "autoUpdatesChannel": "latest",
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "ollama",
+    "ANTHROPIC_MODEL": "gemma4:26b",
+    "ANTHROPIC_API_KEY": "",
+    "ANTHROPIC_BASE_URL": "http://localhost:11434",
+    "CLAUDE_CODE_DISABLE_UNKNOWN_MODEL_WINDOW_ENFORCEMENT": "1"
+  }
 }
