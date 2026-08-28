@@ -5,10 +5,14 @@ from app.api.v1.endpoints import (
     admin,
     auth,
     config,
+    departments,
     doctor,
     health,
     identity,
+    languages,
     patients,
+    sessions,
+    streams,
 )
 
 api_router = APIRouter()
@@ -19,3 +23,7 @@ api_router.include_router(admin.router)
 api_router.include_router(doctor.router)
 api_router.include_router(patients.router)
 api_router.include_router(identity.router)
+api_router.include_router(languages.router)
+api_router.include_router(streams.router)
+api_router.include_router(departments.router)
+api_router.include_router(sessions.router)

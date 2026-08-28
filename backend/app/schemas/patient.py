@@ -1,4 +1,4 @@
-"""Patient schemas."""
+﻿"""Patient schemas."""
 import re
 import uuid
 from datetime import date, datetime
@@ -57,3 +57,6 @@ class PatientLookupResponse(BaseModel):
     found: bool
     patient: Optional[PatientResponse] = None
     message: str
+
+PatientRead = PatientResponse
+

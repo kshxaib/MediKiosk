@@ -1,23 +1,23 @@
 # Graph Report - MediKiosk  (2026-08-28)
 
 ## Corpus Check
-- 107 files · ~38,110 words
+- 134 files · ~46,114 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 659 nodes · 1115 edges · 48 communities (39 shown, 9 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 44 edges (avg confidence: 0.94)
+- 827 nodes · 1634 edges · 64 communities (48 shown, 16 thin omitted)
+- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 74 edges (avg confidence: 0.94)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `6dff5177`
+- Built from commit: `95afbdfb`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - MediKiosk
 - test_auth.py
-- system_service.py
+- router.py
 - What You Must Do When Invoked
 - devDependencies
 - AppRoutes.tsx
@@ -27,7 +27,7 @@
 - Frontend Entry and Documentation
 - main.py
 - endpoints/auth.py
-- User
+- deps.py
 - graphify reference: extra exports and benchmark
 - graphify reference: query, path, explain
 - 0001_baseline.py
@@ -43,39 +43,54 @@
 - .claude/CLAUDE.md
 - extraction-spec.md
 - endpoints/identity.py
-- package.json
+- dependencies
 - patients.py
-- usePatientStore.ts
-- patient_service.py
-- utcnow
-- Base
-- Role
+- useSessionStore.ts
+- User
+- ConfigService
+- SessionService
+- test_sessions.py
 - .lookup
-- .lookup
+- AuthService
+- auth_service.py
+- get_doctor_profile
+- get_current_staff_profile
+- get_admin_dashboard_stats
+- package.json
+- scripts
+- schemas/hospital.py
+- tailwindcss
+- @tailwindcss/vite
+- @types/node
+- @types/react-dom
+- typescript
+- typescript-eslint
+- vite
+- @vitejs/plugin-react
 
 ## God Nodes (most connected - your core abstractions)
-1. `User` - 25 edges
-2. `utcnow()` - 19 edges
-3. `compilerOptions` - 19 edges
-4. `compilerOptions` - 17 edges
-5. `Patient` - 16 edges
-6. `PatientService` - 15 edges
-7. `MobileIdentityProvider` - 14 edges
-8. `Base` - 13 edges
-9. `FaceEnrollment` - 13 edges
-10. `PatientIdentifier` - 13 edges
+1. `User` - 26 edges
+2. `Base` - 23 edges
+3. `utcnow()` - 23 edges
+4. `UUIDPrimaryKeyMixin` - 22 edges
+5. `SessionService` - 22 edges
+6. `Patient` - 20 edges
+7. `compilerOptions` - 19 edges
+8. `TimestampMixin` - 18 edges
+9. `ConfigService` - 17 edges
+10. `compilerOptions` - 17 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `get_current_user()` --uses--> `User`  [INFERRED]
   backend/app/api/deps.py → backend/app/models/user.py
-- `logout()` --uses--> `User`  [INFERRED]
-  backend/app/api/v1/endpoints/auth.py → backend/app/models/user.py
-- `get_current_staff_profile()` --uses--> `User`  [INFERRED]
-  backend/app/api/v1/endpoints/auth.py → backend/app/models/user.py
-- `lookup_patient_by_mobile()` --uses--> `MobileIdentityProvider`  [INFERRED]
-  backend/app/api/v1/endpoints/patients.py → backend/app/services/identity/mobile_provider.py
-- `FaceService` --uses--> `FaceEnrollment`  [INFERRED]
-  backend/app/services/face/base.py → backend/app/models/face_enrollment.py
+- `get_current_active_user()` --uses--> `User`  [INFERRED]
+  backend/app/api/deps.py → backend/app/models/user.py
+- `require_role()` --uses--> `User`  [INFERRED]
+  backend/app/api/deps.py → backend/app/models/user.py
+- `get_admin_dashboard_stats()` --uses--> `User`  [INFERRED]
+  backend/app/api/v1/endpoints/admin.py → backend/app/models/user.py
+- `login()` --uses--> `LoginRequest`  [INFERRED]
+  backend/app/api/v1/endpoints/auth.py → backend/app/schemas/auth.py
 
 ## Import Cycles
 - None detected.
@@ -83,35 +98,35 @@
 ## Hyperedges (group relationships)
 - **Clinical Intake Flow** — identity_provider_abstraction, ai_clinical_assistant, ocr_extraction_pipeline [EXTRACTED 0.95]
 
-## Communities (48 total, 9 thin omitted)
+## Communities (64 total, 16 thin omitted)
 
 ### Community 0 - "MediKiosk"
 Cohesion: 0.11
 Nodes (17): AI Clinical Assistant, Cloudinary Document Pipeline, Identity Provider Abstraction, OCR & Extraction Pipeline, PostgreSQL Schema, Project Requirement, 1. Start PostgreSQL, 2. Backend (+9 more)
 
 ### Community 1 - "test_auth.py"
-Cohesion: 0.13
-Nodes (25): hash_password(), Password hashing and verification utilities using bcrypt., Verify a plaintext password against a stored bcrypt hash., Hash a plaintext password with a unique salt., verify_password(), client(), fixture, TestClient (+17 more)
+Cohesion: 0.09
+Nodes (30): get_settings(), Centralized application configuration. All runtime configuration is read from…, Settings, hash_password(), Password hashing and verification utilities using bcrypt., Verify a plaintext password against a stored bcrypt hash., Hash a plaintext password with a unique salt., verify_password() (+22 more)
 
-### Community 2 - "system_service.py"
-Cohesion: 0.08
-Nodes (30): public_config(), get, PublicConfig, Public (non-secret) configuration endpoint consumed by the frontend., health(), get, HealthResponse, Session (+22 more)
+### Community 2 - "router.py"
+Cohesion: 0.10
+Nodes (26): public_config(), get, PublicConfig, Public (non-secret) configuration endpoint consumed by the frontend., health(), get, HealthResponse, Session (+18 more)
 
 ### Community 3 - "What You Must Do When Invoked"
 Cohesion: 0.07
 Nodes (26): For /graphify add and --watch, For /graphify query, For the commit hook and native CLAUDE.md integration, For --update and --cluster-only, /graphify, Honesty Rules, Interpreter guard for subcommands, Part A - Structural extraction for code files (+18 more)
 
 ### Community 4 - "devDependencies"
-Cohesion: 0.07
-Nodes (29): eslint, @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-refresh, devDependencies, eslint, @eslint/js, eslint-plugin-react-hooks (+21 more)
+Cohesion: 0.15
+Nodes (13): eslint, @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-refresh, devDependencies, eslint, @eslint/js, eslint-plugin-react-hooks (+5 more)
 
 ### Community 5 - "AppRoutes.tsx"
-Cohesion: 0.12
-Nodes (20): Container(), ContainerProps, ProtectedRoute(), ProtectedRouteProps, StatusBadge(), StatusBadgeProps, RootLayout(), rootElement (+12 more)
+Cohesion: 0.11
+Nodes (26): Container(), ContainerProps, ProtectedRoute(), ProtectedRouteProps, StatusBadge(), StatusBadgeProps, RootLayout(), rootElement (+18 more)
 
 ### Community 6 - "test_health.py"
-Cohesion: 0.13
-Nodes (14): get_current_user(), get_db(), Session, Yield a request-scoped database session and always close it., Validate Bearer access token and return the authenticated User., _failing_db(), _FailingSession, _ok_db() (+6 more)
+Cohesion: 0.22
+Nodes (8): _failing_db(), _FailingSession, _ok_db(), _OkSession, TestClient, Tests for GET /api/v1/health. The DB session dependency is overridden with…, test_health_ok(), test_health_reports_503_when_db_down()
 
 ### Community 7 - "compilerOptions"
 Cohesion: 0.08
@@ -126,12 +141,12 @@ Cohesion: 0.09
 Nodes (33): AppError, FastAPI, Application error type and centralized exception handling. A single…, Base class for expected, handled application errors., register_exception_handlers(), create_app(), FastAPI, FastAPI application entry point. Builds the app via a factory so it can be… (+25 more)
 
 ### Community 11 - "endpoints/auth.py"
-Cohesion: 0.06
-Nodes (53): get_current_staff_profile(), login(), logout(), get, post, Session, User, Staff Authentication endpoints. (+45 more)
+Cohesion: 0.15
+Nodes (16): Staff Authentication endpoints., LoginRequest, LogoutResponse, BaseModel, Authentication and JWT request/response schemas., Returns email or username depending on which was provided., Payload to request a new access token using a refresh token., Logout confirmation response. (+8 more)
 
-### Community 12 - "User"
-Cohesion: 0.12
-Nodes (20): get_current_active_user(), User, Shared FastAPI dependencies and RBAC security guards., Ensure the authenticated user is currently active., Dependency factory enforcing RBAC role permissions on route handlers., require_role(), get_admin_dashboard_stats(), Any (+12 more)
+### Community 12 - "deps.py"
+Cohesion: 0.17
+Nodes (13): get_current_active_user(), get_current_user(), get_db(), Session, User, Shared FastAPI dependencies and RBAC security guards., Yield a request-scoped database session and always close it., Validate Bearer access token and return the authenticated User. (+5 more)
 
 ### Community 13 - "graphify reference: extra exports and benchmark"
 Cohesion: 0.22
@@ -163,58 +178,90 @@ Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphif
 
 ### Community 36 - "endpoints/identity.py"
 Cohesion: 0.06
-Nodes (42): enroll_face(), _extract_image_bytes(), post, Session, Patient Biometric Identity API Endpoints., Extract raw image bytes from data URI or raw base64 string., Extracts face embedding from webcam capture and stores active FaceEnrollment., Compares live webcam capture with enrolled biometric. Returns verified=True on… (+34 more)
+Nodes (41): enroll_face(), _extract_image_bytes(), post, Session, Patient Biometric Identity API Endpoints., Extract raw image bytes from data URI or raw base64 string., Extracts face embedding from webcam capture and stores active FaceEnrollment., Compares live webcam capture with enrolled biometric. Returns verified=True on… (+33 more)
 
-### Community 37 - "package.json"
-Cohesion: 0.10
-Nodes (20): axios, dependencies, axios, react, react-dom, react-router-dom, zustand, name (+12 more)
+### Community 37 - "dependencies"
+Cohesion: 0.18
+Nodes (11): axios, dependencies, axios, react, react-dom, react-router-dom, zustand, react (+3 more)
 
 ### Community 38 - "patients.py"
+Cohesion: 0.07
+Nodes (39): create_patient(), get_patient(), lookup_patient_by_mobile(), get, patch, post, Session, UUID (+31 more)
+
+### Community 39 - "useSessionStore.ts"
+Cohesion: 0.12
+Nodes (27): env, apiClient, TOKEN_KEY, AuthState, PatientState, SessionState, SystemState, HealthResponse (+19 more)
+
+### Community 40 - "User"
+Cohesion: 0.06
+Nodes (59): Alembic migration environment. The database URL is pulled from application…, Protected Admin demonstration routes., Base, Declarative base and shared metadata. A consistent naming convention makes…, Reusable model mixins (infrastructure only — no tables defined here). These…, Adds a UUID ``id`` primary key (never a mobile number / RFID / biometric)., Adds UTC ``created_at`` / ``updated_at`` columns., TimestampMixin (+51 more)
+
+### Community 41 - "ConfigService"
 Cohesion: 0.09
-Nodes (35): create_patient(), get_patient(), lookup_patient_by_mobile(), get, post, Session, UUID, Patient API Endpoints. (+27 more)
+Nodes (31): list_department_consultants(), list_departments(), get, Session, UUID, Department configuration endpoints., list_languages(), get (+23 more)
 
-### Community 39 - "usePatientStore.ts"
-Cohesion: 0.15
-Nodes (18): env, apiClient, TOKEN_KEY, AuthState, PatientState, SystemState, HealthResponse, PublicConfig (+10 more)
-
-### Community 40 - "patient_service.py"
+### Community 42 - "SessionService"
 Cohesion: 0.16
-Nodes (16): Adds UTC ``created_at`` / ``updated_at`` columns., TimestampMixin, PatientIdentifier, PatientIdentifier ORM model for polymorphic identifier abstraction., Identifier attached to a patient (e.g. MOBILE, future RFID)., Patient, IdentityProvider, ABC (+8 more)
+Nodes (29): clear_session(), complete_session(), create_session(), get_consents(), get_session(), get, patch, post (+21 more)
 
-### Community 41 - "utcnow"
-Cohesion: 0.24
-Nodes (11): Declarative base and shared metadata. A consistent naming convention makes…, Reusable model mixins (infrastructure only — no tables defined here). These…, Adds a UUID ``id`` primary key (never a mobile number / RFID / biometric)., UUIDPrimaryKeyMixin, FaceEnrollment ORM model., Role ORM model for RBAC., User ORM model for staff authentication., Datetime helpers. All persisted timestamps are timezone-aware UTC. (+3 more)
-
-### Community 42 - "Base"
-Cohesion: 0.20
-Nodes (6): Alembic migration environment. The database URL is pulled from application…, Base, FaceEnrollment, Stores biometric face enrollment embedding references., Register all ORM models on Base.metadata., DeclarativeBase
-
-### Community 43 - "Role"
-Cohesion: 0.22
-Nodes (7): Session, Safe development seeding for initial roles and dev staff accounts., Idempotently seed default roles and development test accounts., seed_database(), Database engine and session factory. Creating the engine does not open a…, Staff roles (e.g. ADMIN, DOCTOR)., Role
+### Community 43 - "test_sessions.py"
+Cohesion: 0.14
+Nodes (25): client(), created_patient(), fixture, TestClient, random_mobile(), Comprehensive unit and integration tests for Phase 4 Session and Consent., Helper to create a fresh registered patient for session tests., test_clear_session_cancels_session() (+17 more)
 
 ### Community 45 - ".lookup"
 Cohesion: 0.50
 Nodes (3): Patient, Session, Looks up an active patient by their identifier value.
 
+### Community 46 - "AuthService"
+Cohesion: 0.16
+Nodes (16): login(), Session, Authenticate a staff user and issue JWT Access and Refresh tokens., Exchange a valid refresh token for a new access token., refresh_token(), Response returned upon successful login., Response containing a renewed access token., TokenRefreshResponse (+8 more)
+
+### Community 48 - "auth_service.py"
+Cohesion: 0.22
+Nodes (14): Staff authentication service., Auth services package., create_access_token(), create_refresh_token(), decode_token(), Any, UUID, JWT token creation, validation, and extraction using PyJWT. (+6 more)
+
+### Community 49 - "get_doctor_profile"
+Cohesion: 0.40
+Nodes (5): get_doctor_profile(), Any, get, User, Doctor route verifying DOCTOR (or supervisory ADMIN) role access.
+
+### Community 50 - "get_current_staff_profile"
+Cohesion: 0.29
+Nodes (7): get_current_staff_profile(), logout(), get, post, User, Acknowledge logout for the authenticated staff session., Return the profile and role of the currently authenticated staff member.
+
+### Community 51 - "get_admin_dashboard_stats"
+Cohesion: 0.40
+Nodes (5): get_admin_dashboard_stats(), Any, get, User, Admin-only diagnostic endpoint verifying ADMIN RBAC role access.
+
+### Community 52 - "package.json"
+Cohesion: 0.40
+Nodes (4): name, private, type, version
+
+### Community 53 - "scripts"
+Cohesion: 0.40
+Nodes (5): scripts, build, dev, lint, preview
+
+### Community 54 - "schemas/hospital.py"
+Cohesion: 0.50
+Nodes (3): HospitalRead, BaseModel, Hospital Pydantic schemas.
+
 ## Knowledge Gaps
 - **133 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+128 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `utcnow()` connect `utcnow` to `test_auth.py`, `system_service.py`, `endpoints/identity.py`, `patients.py`, `patient_service.py`, `endpoints/auth.py`?**
+- **Why does `utcnow()` connect `User` to `test_auth.py`, `router.py`, `endpoints/identity.py`, `patients.py`, `SessionService`, `AuthService`, `auth_service.py`?**
   _High betweenness centrality (0.052) - this node is a cross-community bridge._
-- **Why does `User` connect `User` to `test_auth.py`, `test_health.py`, `patient_service.py`, `utcnow`, `Base`, `Role`, `endpoints/auth.py`?**
-  _High betweenness centrality (0.043) - this node is a cross-community bridge._
-- **Why does `Patient` connect `patient_service.py` to `utcnow`, `Base`, `endpoints/identity.py`, `patients.py`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+- **Why does `User` connect `User` to `test_auth.py`, `endpoints/auth.py`, `deps.py`, `AuthService`, `auth_service.py`, `get_doctor_profile`, `get_current_staff_profile`, `get_admin_dashboard_stats`?**
+  _High betweenness centrality (0.039) - this node is a cross-community bridge._
+- **Why does `create_app()` connect `main.py` to `test_auth.py`, `test_sessions.py`, `endpoints/identity.py`?**
+  _High betweenness centrality (0.026) - this node is a cross-community bridge._
 - **Are the 9 inferred relationships involving `User` (e.g. with `get_current_active_user()` and `get_current_user()`) actually correct?**
   _`User` has 9 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 4 inferred relationships involving `Patient` (e.g. with `InsightFaceService` and `IdentityProvider`) actually correct?**
-  _`Patient` has 4 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 10 inferred relationships involving `SessionService` (e.g. with `Consent` and `Department`) actually correct?**
+  _`SessionService` has 10 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `name`, `private`, `version` to the rest of the system?**
   _133 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `MediKiosk` be split into smaller, more focused modules?**

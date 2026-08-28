@@ -67,13 +67,13 @@ export const MobilePage: React.FC = () => {
     <Container className="py-8 max-w-2xl mx-auto">
       <div className="text-center mb-6">
         <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-700 mb-2">
-          Step 1: Patient Identification
+          Step 2: Patient Identification
         </span>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900">
           Enter Your Mobile Number
         </h1>
         <p className="mt-1 text-sm text-slate-500">
-          We use your mobile number to look up your existing health record or start registration.
+          We use your mobile number to look up your existing hospital record or start registration.
         </p>
       </div>
 
@@ -102,15 +102,15 @@ export const MobilePage: React.FC = () => {
             <button
               type="submit"
               disabled={inputVal.length < 10 || lookupStatus === 'searching'}
-              className="flex-1 rounded-xl bg-blue-600 py-3 text-base font-bold text-white shadow-sm hover:bg-blue-500 transition disabled:opacity-40"
+              className="flex-1 rounded-xl bg-blue-600 py-3 text-base font-bold text-white shadow-sm hover:bg-blue-500 transition disabled:opacity-40 cursor-pointer"
             >
-              {lookupStatus === 'searching' ? 'Searching Records...' : 'Find Patient Record'}
+              {lookupStatus === 'searching' ? 'Searching Records...' : 'Find Patient Record →'}
             </button>
             {inputVal && (
               <button
                 type="button"
                 onClick={handleClear}
-                className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100 transition"
+                className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100 transition cursor-pointer"
               >
                 Clear
               </button>
@@ -125,7 +125,7 @@ export const MobilePage: React.FC = () => {
               key={n}
               type="button"
               onClick={() => handleKeyPress(n)}
-              className="rounded-xl border border-slate-200 bg-slate-50 py-3.5 text-xl font-bold text-slate-800 hover:bg-slate-200 active:scale-95 transition"
+              className="rounded-xl border border-slate-200 bg-slate-50 py-3.5 text-xl font-bold text-slate-800 hover:bg-slate-200 active:scale-95 transition cursor-pointer"
             >
               {n}
             </button>
@@ -133,23 +133,23 @@ export const MobilePage: React.FC = () => {
           <button
             type="button"
             onClick={handleClear}
-            className="rounded-xl border border-slate-200 bg-slate-100 py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-200 transition"
+            className="rounded-xl border border-slate-200 bg-slate-100 py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-200 transition cursor-pointer"
           >
             RESET
           </button>
           <button
             type="button"
             onClick={() => handleKeyPress('0')}
-            className="rounded-xl border border-slate-200 bg-slate-50 py-3.5 text-xl font-bold text-slate-800 hover:bg-slate-200 active:scale-95 transition"
+            className="rounded-xl border border-slate-200 bg-slate-50 py-3.5 text-xl font-bold text-slate-800 hover:bg-slate-200 active:scale-95 transition cursor-pointer"
           >
             0
           </button>
           <button
             type="button"
             onClick={handleBackspace}
-            className="rounded-xl border border-slate-200 bg-slate-100 py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-200 transition"
+            className="rounded-xl border border-slate-200 bg-slate-100 py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-200 transition cursor-pointer"
           >
-            âŒ« BACK
+            ⌫ BACK
           </button>
         </div>
 
@@ -164,20 +164,20 @@ export const MobilePage: React.FC = () => {
         {lookupStatus === 'found' && currentPatient && (
           <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 text-center">
             <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 font-bold mb-2">
-              âœ“
+              ✓
             </div>
             <h3 className="text-lg font-bold text-emerald-900">Existing Patient Found</h3>
             <div className="mt-2 space-y-1 text-sm text-emerald-800">
               <div className="font-semibold text-base">{currentPatient.full_name}</div>
               <div>Patient Code: <span className="font-mono font-bold">{currentPatient.patient_code}</span></div>
-              {currentPatient.age && <div>Age: {currentPatient.age} yrs {currentPatient.gender && `â€¢ ${currentPatient.gender}`}</div>}
+              {currentPatient.age && <div>Age: {currentPatient.age} yrs {currentPatient.gender && `• ${currentPatient.gender}`}</div>}
             </div>
 
             <button
               onClick={handleProceedToVerification}
-              className="mt-4 w-full rounded-xl bg-emerald-600 py-3 text-base font-bold text-white shadow-sm hover:bg-emerald-500 transition"
+              className="mt-4 w-full rounded-xl bg-emerald-600 py-3 text-base font-bold text-white shadow-sm hover:bg-emerald-500 transition cursor-pointer"
             >
-              Proceed to Webcam Face Verification â†’
+              Proceed to Webcam Face Verification →
             </button>
           </div>
         )}
@@ -192,9 +192,9 @@ export const MobilePage: React.FC = () => {
 
             <button
               onClick={handleGoToRegistration}
-              className="mt-4 w-full rounded-xl bg-blue-600 py-3 text-base font-bold text-white shadow-sm hover:bg-blue-500 transition"
+              className="mt-4 w-full rounded-xl bg-blue-600 py-3 text-base font-bold text-white shadow-sm hover:bg-blue-500 transition cursor-pointer"
             >
-              Register as New Patient â†’
+              Register as New Patient →
             </button>
           </div>
         )}
@@ -202,4 +202,3 @@ export const MobilePage: React.FC = () => {
     </Container>
   )
 }
-
