@@ -1,10 +1,15 @@
+import { useEffect } from 'react'
 import { Container } from '../components/Container'
 import { StatusBadge } from '../components/StatusBadge'
-import { useSystemHealth } from '../hooks/useSystemHealth'
+import { useSystemStore } from '../stores'
 import { env } from '../config/env'
 
 export function SystemStatusPage() {
-  const { health, config, loading, error, refresh } = useSystemHealth()
+  const { health, config, isLoading, error, fetchAll } = useSystemStore()
+
+  useEffect(() => {
+    fetchAll()
+  }, [fetchAll])
 
   return (
     <Container className="py-12">
@@ -20,7 +25,7 @@ export function SystemStatusPage() {
           </div>
           <button
             type="button"
-            onClick={refresh}
+            onClick={fetchAll}
             className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100"
           >
             Refresh
@@ -35,8 +40,8 @@ export function SystemStatusPage() {
 
         <dl className="mt-6 divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white">
           <Row label="API health">
-            {loading ? (
-              <span className="text-sm text-slate-400">Checking…</span>
+            {isLoading ? (
+              <span className="text-sm text-slate-400">Checking...</span>
             ) : (
               <StatusBadge ok={health?.status === 'healthy'}>
                 {health?.status ?? 'unknown'}
@@ -44,8 +49,8 @@ export function SystemStatusPage() {
             )}
           </Row>
           <Row label="Database">
-            {loading ? (
-              <span className="text-sm text-slate-400">Checking…</span>
+            {isLoading ? (
+              <span className="text-sm text-slate-400">Checking...</span>
             ) : (
               <StatusBadge ok={health?.checks.database === 'ok'}>
                 {health?.checks.database ?? 'unknown'}

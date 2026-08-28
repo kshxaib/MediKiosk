@@ -1,9 +1,7 @@
 """Centralized application configuration.
 
 All runtime configuration is read from the environment (or an ``.env`` file)
-through a single Pydantic ``Settings`` object. Future-phase secrets are
-intentionally NOT declared here yet; ``extra="ignore"`` lets them sit in
-``.env`` as documented placeholders without breaking Phase 1.
+through a single Pydantic ``Settings`` object.
 """
 from functools import lru_cache
 
@@ -31,9 +29,13 @@ class Settings(BaseSettings):
     )
 
     # --- CORS ---
-    # Comma-separated list of allowed origins, e.g.
-    # "http://localhost:5173,http://localhost:3000".
     BACKEND_CORS_ORIGINS: str = "http://localhost:5173"
+
+    # --- Authentication & JWT ---
+    JWT_SECRET_KEY: str = "dev_insecure_jwt_secret_key_change_in_production"
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     @property
     def cors_origins(self) -> list[str]:

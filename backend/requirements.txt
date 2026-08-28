@@ -1,4 +1,4 @@
-# MediKiosk backend — Phase 1 foundation dependencies.
+﻿# MediKiosk backend — Phase 1 & 2 dependencies.
 # Pinned with lower bounds; versions resolved at install time.
 
 # Web framework
@@ -8,11 +8,16 @@ uvicorn[standard]>=0.30
 # Settings & validation
 pydantic>=2.9
 pydantic-settings>=2.5
+email-validator>=2.2
 
 # Database
 SQLAlchemy>=2.0.35
 alembic>=1.13
 psycopg[binary]>=3.2
+
+# Authentication & Security
+pyjwt>=2.10
+bcrypt>=4.2
 
 # Testing
 pytest>=8.3
