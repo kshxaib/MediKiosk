@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Container } from '../../components/Container'
 import { usePatientStore, useSessionStore } from '../../stores'
@@ -39,7 +39,7 @@ export const DepartmentPage: React.FC = () => {
       await updateSession(currentSession.id, {
         department_id: dept.id,
       })
-      navigate('/patient/ready')
+      navigate('/patient/interview')
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Failed to select department'
       setErrorMessage(msg)
@@ -111,3 +111,5 @@ export const DepartmentPage: React.FC = () => {
     </Container>
   )
 }
+
+export default DepartmentPage

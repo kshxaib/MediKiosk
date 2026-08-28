@@ -33,6 +33,7 @@ export const InterviewReadyPage: React.FC = () => {
     try {
       await startSession(currentSession.id)
       setStarted(true)
+      navigate('/patient/interview')
     } catch {
       // Handled in store
     } finally {

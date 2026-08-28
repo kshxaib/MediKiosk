@@ -822,9 +822,9 @@
     "semantic_hash": ""
   },
   "backend/app/services/session/session_state_machine.py": {
-    "mtime": 1787942977.5634418,
-    "seen": 1787943371.2180738,
-    "ast_hash": "12792bc8510d3492c62bd57b88fa0972",
+    "mtime": 1787938205.2195313,
+    "seen": 1787938501.4739401,
+    "ast_hash": "d7d7e099dee7454482fdb0bb2013bed7",
     "semantic_hash": ""
   },
   "backend/tests/test_sessions.py": {
@@ -834,15 +834,15 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/ConsentPage.tsx": {
-    "mtime": 1787943125.8052197,
-    "seen": 1787943371.2180982,
-    "ast_hash": "701596d86aab78baaaaf4d884cccfc16",
+    "mtime": 1787939730.4056382,
+    "seen": 1787940687.8721144,
+    "ast_hash": "b10251cd4ae36d189f6b45aba0d1381e",
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/DepartmentPage.tsx": {
-    "mtime": 1787943125.8052197,
-    "seen": 1787943371.218099,
-    "ast_hash": "daf177bf50852c4ea6e093e4d9d5df00",
+    "mtime": 1787942112.1271107,
+    "seen": 1787942185.726426,
+    "ast_hash": "9afae9bec8820870671cf54af97de56f",
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/InterviewReadyPage.tsx": {
@@ -852,15 +852,15 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/LanguagePage.tsx": {
-    "mtime": 1787943280.4901917,
-    "seen": 1787943371.2181036,
-    "ast_hash": "05f8d6ee5951a7d62ba899720d469fa8",
+    "mtime": 1787941159.6691408,
+    "seen": 1787942185.7264295,
+    "ast_hash": "10701c9000b7c6bf76d92a2ebabb9559",
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/StreamPage.tsx": {
-    "mtime": 1787943125.8052197,
-    "seen": 1787943371.2181063,
-    "ast_hash": "7a66eb2ed2a80907b434364a80cf4a92",
+    "mtime": 1787941252.2509577,
+    "seen": 1787942185.7264326,
+    "ast_hash": "c401a17daaa9494b1b020c37f9a3ef8d",
     "semantic_hash": ""
   },
   "frontend/src/stores/useSessionStore.ts": {
@@ -960,9 +960,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/InterviewPage.tsx": {
-    "mtime": 1787943319.642033,
-    "seen": 1787943371.2181015,
-    "ast_hash": "81d1480f314aa671048a30ced29df795",
+    "mtime": 1787942139.640761,
+    "seen": 1787942185.7264276,
+    "ast_hash": "ff3389eea74810e2c0498609a2e1bf98",
     "semantic_hash": ""
   },
   "frontend/src/types/interview.ts": {

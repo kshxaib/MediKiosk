@@ -1,12 +1,15 @@
-﻿import { create } from 'zustand'
+import { create } from 'zustand'
 import { apiClient } from '../services/apiClient'
 import type {
+  AnswerPayload,
+  AnswerSubmissionResponse,
   ConsentRecord,
   ConsentSubmitPayload,
   Department,
   IntakeSession,
   LanguageOption,
   MedicalStream,
+  NextQuestion,
   SessionCreatePayload,
   SessionUpdatePayload,
 } from '../types'
@@ -20,6 +23,8 @@ export interface SessionState {
   availableStreams: MedicalStream[]
   availableDepartments: Department[]
   consents: ConsentRecord[]
+  currentQuestion: NextQuestion | null
+  interviewCompleted: boolean
   loading: boolean
   error: string | null
 
@@ -37,6 +42,8 @@ export interface SessionState {
   startSession: (sessionId: string) => Promise<IntakeSession>
   completeSession: (sessionId: string) => Promise<IntakeSession>
   clearSession: (sessionId: string) => Promise<IntakeSession>
+  fetchNextQuestion: (sessionId: string) => Promise<NextQuestion>
+  submitAnswer: (sessionId: string, payload: AnswerPayload) => Promise<AnswerSubmissionResponse>
   resetSession: () => void
 }
 
@@ -49,6 +56,8 @@ export const useSessionStore = create<SessionState>((set) => ({
   availableStreams: [],
   availableDepartments: [],
   consents: [],
+  currentQuestion: null,
+  interviewCompleted: false,
   loading: false,
   error: null,
 
@@ -140,7 +149,6 @@ export const useSessionStore = create<SessionState>((set) => ({
     set({ loading: true, error: null })
     try {
       const { data } = await apiClient.post<ConsentRecord>(`/sessions/${sessionId}/consent`, payload)
-      // Refresh session after consent state transition
       const { data: updatedSession } = await apiClient.get<IntakeSession>(`/sessions/${sessionId}`)
       set((state) => ({
         consents: [data, ...state.consents],
@@ -202,15 +210,49 @@ export const useSessionStore = create<SessionState>((set) => ({
     }
   },
 
+  fetchNextQuestion: async (sessionId: string) => {
+    set({ loading: true, error: null })
+    try {
+      const { data } = await apiClient.post<NextQuestion>(`/sessions/${sessionId}/ai/next-question`)
+      set({
+        currentQuestion: data,
+        interviewCompleted: data.completed,
+        loading: false,
+      })
+      return data
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to get next question'
+      set({ error: msg, loading: false })
+      throw err
+    }
+  },
+
+  submitAnswer: async (sessionId: string, payload: AnswerPayload) => {
+    set({ loading: true, error: null })
+    try {
+      const { data } = await apiClient.post<AnswerSubmissionResponse>(
+        `/sessions/${sessionId}/ai/answer`,
+        payload,
+      )
+      set({ loading: false })
+      return data
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to submit answer'
+      set({ error: msg, loading: false })
+      throw err
+    }
+  },
+
   resetSession: () => {
     set({
       currentSession: null,
       selectedStream: null,
       selectedDepartment: null,
       consents: [],
+      currentQuestion: null,
+      interviewCompleted: false,
       loading: false,
       error: null,
     })
   },
 }))
-

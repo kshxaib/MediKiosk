@@ -9,6 +9,7 @@ from app.api.v1.endpoints import (
     doctor,
     health,
     identity,
+    interview,
     languages,
     patients,
     sessions,
@@ -27,3 +28,4 @@ api_router.include_router(languages.router)
 api_router.include_router(streams.router)
 api_router.include_router(departments.router)
 api_router.include_router(sessions.router)
+api_router.include_router(interview.router)

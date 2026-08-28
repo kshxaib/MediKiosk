@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Container } from '../../components/Container'
 import { useSessionStore } from '../../stores'
@@ -51,10 +51,10 @@ export const LanguagePage: React.FC = () => {
                   {lang.code === 'hi' ? '🇮🇳' : '🌐'}
                 </div>
                 <div className="text-2xl font-bold text-slate-900">
-                  {lang.native_name}
+                  {lang.name}
                 </div>
                 <div className="text-sm font-medium text-slate-500 mt-1">
-                  {lang.name}
+                  {lang.code === 'hi' ? 'Hindi' : 'English (Default)'}
                 </div>
 
                 {isEnglish ? (
@@ -63,7 +63,7 @@ export const LanguagePage: React.FC = () => {
                   </div>
                 ) : (
                   <div className="mt-4 inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-600">
-                    Coming Soon
+                    Coming Soon (Disabled)
                   </div>
                 )}
               </button>
@@ -78,3 +78,5 @@ export const LanguagePage: React.FC = () => {
     </Container>
   )
 }
+
+export default LanguagePage

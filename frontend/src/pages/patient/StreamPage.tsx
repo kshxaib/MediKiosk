@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Container } from '../../components/Container'
 import { usePatientStore, useSessionStore } from '../../stores'
@@ -103,3 +103,5 @@ export const StreamPage: React.FC = () => {
     </Container>
   )
 }
+
+export default StreamPage

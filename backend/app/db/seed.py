@@ -6,6 +6,8 @@ from sqlalchemy.orm import Session
 
 from app.core.security import hash_password
 from app.db.session import SessionLocal
+from app.models.clinical_workflow import ClinicalWorkflow
+from app.models.question import Question
 from app.models.department import Department
 from app.models.hospital import Hospital
 from app.models.medical_stream import MedicalStream
@@ -178,6 +180,191 @@ def seed_database(db: Session) -> None:
             )
             db.add(dept)
             print(f"Created department: {dept.name} ({dept.code})")
+
+
+    # 6. Seed Clinical Workflows
+    # 6a. Modern Medicine - General Medicine Intake
+    stmt_mod_stream = select(MedicalStream).where(MedicalStream.code == "MODERN_MEDICINE")
+    mod_stream = db.scalars(stmt_mod_stream).first()
+
+    stmt_gen_med = select(Department).where(Department.code == "GEN_MED", Department.hospital_id == hospital.id)
+    gen_med_dept = db.scalars(stmt_gen_med).first()
+
+    if mod_stream and gen_med_dept:
+        stmt_wf = select(ClinicalWorkflow).where(ClinicalWorkflow.code == "MOD_GEN_MED_V1")
+        wf_mod = db.scalars(stmt_wf).first()
+        if not wf_mod:
+            wf_mod = ClinicalWorkflow(
+                id=uuid.uuid4(),
+                medical_stream_id=mod_stream.id,
+                department_id=gen_med_dept.id,
+                name="General Medicine Clinical Intake Workflow",
+                code="MOD_GEN_MED_V1",
+                description="Comprehensive outpatient intake: chief complaint, onset, severity, fever, progression.",
+                version="1.0.0",
+                is_active=True,
+            )
+            db.add(wf_mod)
+            db.flush()
+            print(f"Created clinical workflow: {wf_mod.name} ({wf_mod.code})")
+
+        # Questions for Modern Medicine
+        mod_questions = [
+            {
+                "code": "q_001",
+                "text": "What is your primary health concern or symptom today?",
+                "type": "TEXT",
+                "category": "CHIEF_COMPLAINT",
+                "sequence": 1,
+                "required": True,
+            },
+            {
+                "code": "q_002",
+                "text": "When did this symptom or discomfort start?",
+                "type": "TEXT",
+                "category": "ONSET",
+                "sequence": 2,
+                "required": True,
+            },
+            {
+                "code": "q_003",
+                "text": "How would you rate the severity of your discomfort on a scale of 1 (mild) to 10 (severe)?",
+                "type": "NUMBER",
+                "category": "SEVERITY",
+                "sequence": 3,
+                "required": True,
+                "validation_rules": {"min": 1, "max": 10},
+            },
+            {
+                "code": "q_004",
+                "text": "Do you currently have a fever, chills, or elevated body temperature?",
+                "type": "YES_NO",
+                "category": "FEVER_CHECK",
+                "sequence": 4,
+                "required": True,
+                "options": ["YES", "NO", "NOT SURE"],
+            },
+            {
+                "code": "q_005",
+                "text": "How has your condition progressed over the last 24 hours?",
+                "type": "SINGLE_CHOICE",
+                "category": "PROGRESSION",
+                "sequence": 5,
+                "required": True,
+                "options": ["Getting Better", "Staying About the Same", "Getting Worse", "Fluctuating"],
+            },
+        ]
+
+        for q_data in mod_questions:
+            stmt_q = select(Question).where(
+                Question.workflow_id == wf_mod.id,
+                Question.question_code == q_data["code"],
+                Question.language == "en",
+            )
+            q = db.scalars(stmt_q).first()
+            if not q:
+                q = Question(
+                    id=uuid.uuid4(),
+                    workflow_id=wf_mod.id,
+                    question_code=q_data["code"],
+                    question_text=q_data["text"],
+                    question_type=q_data["type"],
+                    category=q_data.get("category"),
+                    sequence=q_data["sequence"],
+                    is_required=q_data["required"],
+                    language="en",
+                    validation_rules=q_data.get("validation_rules"),
+                    options=q_data.get("options"),
+                )
+                db.add(q)
+                print(f"Created question: {q_data['code']} for workflow {wf_mod.code}")
+
+    # 6b. AYUSH - Ayurveda Clinical Intake
+    stmt_ayush_stream = select(MedicalStream).where(MedicalStream.code == "AYUSH")
+    ayush_stream = db.scalars(stmt_ayush_stream).first()
+
+    stmt_ayurveda_dept = select(Department).where(Department.code == "AYURVEDA", Department.hospital_id == hospital.id)
+    ayurveda_dept = db.scalars(stmt_ayurveda_dept).first()
+
+    if ayush_stream and ayurveda_dept:
+        stmt_wf_ay = select(ClinicalWorkflow).where(ClinicalWorkflow.code == "AYUSH_AYURVEDA_V1")
+        wf_ay = db.scalars(stmt_wf_ay).first()
+        if not wf_ay:
+            wf_ay = ClinicalWorkflow(
+                id=uuid.uuid4(),
+                medical_stream_id=ayush_stream.id,
+                department_id=ayurveda_dept.id,
+                name="Ayurvedic Holistic Intake Workflow",
+                code="AYUSH_AYURVEDA_V1",
+                description="Traditional Ayurvedic clinical assessment: chief complaint, Agni, Nidra, Vata/Pitta/Kapha symptoms.",
+                version="1.0.0",
+                is_active=True,
+            )
+            db.add(wf_ay)
+            db.flush()
+            print(f"Created clinical workflow: {wf_ay.name} ({wf_ay.code})")
+
+        ay_questions = [
+            {
+                "code": "ay_001",
+                "text": "What is the primary health issue or imbalance you are experiencing today?",
+                "type": "TEXT",
+                "category": "CHIEF_COMPLAINT",
+                "sequence": 1,
+                "required": True,
+            },
+            {
+                "code": "ay_002",
+                "text": "How is your digestive fire (Agni) and appetite?",
+                "type": "SINGLE_CHOICE",
+                "category": "AGNI",
+                "sequence": 2,
+                "required": True,
+                "options": ["Good / Regular (Sama)", "Irregular / Variable (Visham)", "High / Burning (Tikshna)", "Low / Sluggish (Manda)"],
+            },
+            {
+                "code": "ay_003",
+                "text": "How many hours of restful sleep (Nidra) do you get per night on average?",
+                "type": "NUMBER",
+                "category": "NIDRA",
+                "sequence": 3,
+                "required": True,
+                "validation_rules": {"min": 0, "max": 24},
+            },
+            {
+                "code": "ay_004",
+                "text": "Do you experience severe joint stiffness, dryness, or cracking sounds?",
+                "type": "YES_NO",
+                "category": "VATA_CHECK",
+                "sequence": 4,
+                "required": True,
+                "options": ["YES", "NO", "NOT SURE"],
+            },
+        ]
+
+        for q_data in ay_questions:
+            stmt_q = select(Question).where(
+                Question.workflow_id == wf_ay.id,
+                Question.question_code == q_data["code"],
+                Question.language == "en",
+            )
+            q = db.scalars(stmt_q).first()
+            if not q:
+                q = Question(
+                    id=uuid.uuid4(),
+                    workflow_id=wf_ay.id,
+                    question_code=q_data["code"],
+                    question_text=q_data["text"],
+                    question_type=q_data["type"],
+                    category=q_data.get("category"),
+                    sequence=q_data["sequence"],
+                    is_required=q_data["required"],
+                    language="en",
+                    validation_rules=q_data.get("validation_rules"),
+                    options=q_data.get("options"),
+                )
+                db.add(q)
+                print(f"Created question: {q_data['code']} for workflow {wf_ay.code}")
 
     db.commit()
     print("Database seeding completed successfully.")

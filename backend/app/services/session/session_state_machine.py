@@ -17,15 +17,18 @@ VALID_TRANSITIONS: dict[str, set[str]] = {
     },
     SessionStatus.INTERVIEW_ACTIVE.value: {
         SessionStatus.REVIEW_PENDING.value,
+        SessionStatus.COMPLETED.value,
         SessionStatus.CANCELLED.value,
     },
     SessionStatus.REVIEW_PENDING.value: {
         SessionStatus.PATIENT_CONFIRMED.value,
         SessionStatus.INTERVIEW_ACTIVE.value,
+        SessionStatus.COMPLETED.value,
         SessionStatus.CANCELLED.value,
     },
     SessionStatus.PATIENT_CONFIRMED.value: {
         SessionStatus.SUMMARY_GENERATED.value,
+        SessionStatus.COMPLETED.value,
         SessionStatus.CANCELLED.value,
     },
     SessionStatus.SUMMARY_GENERATED.value: {

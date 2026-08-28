@@ -1,0 +1,209 @@
+{
+  "communities": {
+    "0": [
+      "ai_clinical_assistant",
+      "claude_md",
+      "cloudinary_pipeline",
+      "frontend_src_assets_hero",
+      "identity_provider_abstraction",
+      "ocr_extraction_pipeline",
+      "postgresql_schema",
+      "project_requirement"
+    ],
+    "1": [
+      "frontend_package",
+      "frontend_package_name",
+      "frontend_package_private",
+      "frontend_package_type",
+      "frontend_package_version"
+    ],
+    "2": [
+      "frontend_package_dependencies",
+      "frontend_package_dependencies_react",
+      "frontend_package_dependencies_react_dom",
+      "react",
+      "react_dom"
+    ],
+    "3": [
+      "frontend_package_scripts",
+      "frontend_package_scripts_build",
+      "frontend_package_scripts_dev",
+      "frontend_package_scripts_lint",
+      "frontend_package_scripts_preview"
+    ],
+    "4": [
+      "eslint",
+      "frontend_package_devdependencies",
+      "frontend_package_devdependencies_eslint"
+    ],
+    "5": [
+      "frontend_src_app",
+      "frontend_src_app_app",
+      "frontend_src_main"
+    ],
+    "6": [
+      "eslint_js",
+      "frontend_package_devdependencies_eslint_js"
+    ],
+    "7": [
+      "eslint_plugin_react_hooks",
+      "frontend_package_devdependencies_eslint_plugin_react_hooks"
+    ],
+    "8": [
+      "eslint_plugin_react_refresh",
+      "frontend_package_devdependencies_eslint_plugin_react_refresh"
+    ],
+    "9": [
+      "frontend_index_html",
+      "frontend_readme"
+    ],
+    "10": [
+      "frontend_package_devdependencies_globals",
+      "globals"
+    ],
+    "11": [
+      "frontend_package_devdependencies_types_react",
+      "types_react"
+    ],
+    "12": [
+      "frontend_package_devdependencies_types_react_dom",
+      "types_react_dom"
+    ],
+    "13": [
+      "frontend_package_devdependencies_vite",
+      "vite"
+    ],
+    "14": [
+      "frontend_package_devdependencies_vitejs_plugin_react",
+      "vitejs_plugin_react"
+    ],
+    "15": [
+      "frontend_eslint_config"
+    ],
+    "16": [
+      "frontend_vite_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.25,
+    "1": 0.4,
+    "2": 0.4,
+    "3": 0.4,
+    "4": 0.6666666666666666,
+    "5": 1.0,
+    "6": 1.0,
+    "7": 1.0,
+    "8": 1.0,
+    "9": 1.0,
+    "10": 1.0,
+    "11": 1.0,
+    "12": 1.0,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0,
+    "16": 1.0
+  },
+  "gods": [
+    {
+      "id": "project_requirement",
+      "label": "Project Requirement",
+      "degree": 7
+    },
+    {
+      "id": "frontend_package_scripts",
+      "label": "scripts",
+      "degree": 5
+    },
+    {
+      "id": "frontend_src_app_app",
+      "label": "App()",
+      "degree": 2
+    },
+    {
+      "id": "frontend_package_devdependencies_globals",
+      "label": "globals",
+      "degree": 2
+    },
+    {
+      "id": "frontend_package_devdependencies_types_react",
+      "label": "@types/react",
+      "degree": 2
+    },
+    {
+      "id": "frontend_package_devdependencies_types_react_dom",
+      "label": "@types/react-dom",
+      "degree": 2
+    },
+    {
+      "id": "frontend_package_devdependencies_vite",
+      "label": "vite",
+      "degree": 2
+    },
+    {
+      "id": "frontend_package_devdependencies_vitejs_plugin_react",
+      "label": "@vitejs/plugin-react",
+      "degree": 2
+    },
+    {
+      "id": "frontend_package_dependencies_react",
+      "label": "react",
+      "degree": 2
+    },
+    {
+      "id": "frontend_package_dependencies_react_dom",
+      "label": "react-dom",
+      "degree": 2
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Hero Image",
+      "target": "Project Requirement",
+      "source_files": [
+        "frontend/src/assets/hero.png",
+        "PROJECT_REQUIREMENT.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "conceptually_related_to",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (doc ↔ image); connects across different repos/directories; peripheral node `Hero Image` unexpectedly reaches hub `Project Requirement`"
+    },
+    {
+      "source": "Frontend Entry Point",
+      "target": "Frontend README",
+      "source_files": [
+        "frontend/index.html",
+        "frontend/README.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `devDependencies` connect `Linting Dependencies` to `Package Metadata`, `ESLint Core Configuration`, `React Hooks Linting`, `React Refresh Linting`, `Global Variables Configuration`, `React Type Definitions`, `React DOM Type Definitions`, `Vite Build Tool`, `Vite React Plugin`?",
+      "why": "High betweenness centrality (0.367) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `scripts` connect `Project Scripts` to `Package Metadata`?",
+      "why": "High betweenness centrality (0.108) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `dependencies` connect `Core React Dependencies` to `Package Metadata`?",
+      "why": "High betweenness centrality (0.106) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 2 inferred relationships involving `Project Requirement` (e.g. with `CLAUDE.md` and `Hero Image`) actually correct?",
+      "why": "`Project Requirement` has 2 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `name`, `private`, `type` to the rest of the system?",
+      "why": "27 weakly-connected nodes found - possible documentation gaps or missing edges."
+    }
+  ]
+}

@@ -4,8 +4,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
-from app.schemas.medical_stream import ClinicalWorkflowRead, MedicalStreamRead
+from app.schemas.clinical_workflow import ClinicalWorkflowRead
+from app.schemas.medical_stream import MedicalStreamRead
 from app.services.config_service import ConfigService
+from app.services.interview.workflow_service import WorkflowService
 
 router = APIRouter(prefix="/streams", tags=["Configuration"])
 
@@ -35,5 +37,5 @@ def get_stream_workflows(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Medical stream with ID {stream_id} not found",
         )
-    # Returns configured workflows (empty list if none configured yet in Phase 4)
-    return []
+    workflows = WorkflowService.get_workflows_for_stream(db, stream_id)
+    return [ClinicalWorkflowRead.model_validate(w) for w in workflows]

@@ -12,6 +12,7 @@ from app.db.base import Base
 from app.db.mixins import TimestampMixin, UUIDPrimaryKeyMixin
 
 if TYPE_CHECKING:
+    from app.models.answer import Answer
     from app.models.consent import Consent
     from app.models.department import Department
     from app.models.hospital import Hospital
@@ -100,6 +101,11 @@ class IntakeSession(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         "Department",
         back_populates="intake_sessions",
         lazy="joined",
+    )
+    answers: Mapped[list["Answer"]] = relationship(
+        "Answer",
+        back_populates="session",
+        cascade="all, delete-orphan",
     )
     consents: Mapped[list["Consent"]] = relationship(
         "Consent",
