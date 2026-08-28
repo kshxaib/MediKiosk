@@ -1,16 +1,16 @@
 # Graph Report - MediKiosk  (2026-08-29)
 
 ## Corpus Check
-- 150 files · ~52,731 words
+- 151 files · ~53,026 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 925 nodes · 1915 edges · 66 communities (50 shown, 16 thin omitted)
+- 927 nodes · 1919 edges · 66 communities (50 shown, 16 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 88 edges (avg confidence: 0.94)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b72df9a0`
+- Built from commit: `5cd4e6f8`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -48,7 +48,7 @@
 - useSessionStore.ts
 - Base
 - ConfigService
-- utcnow
+- SessionService
 - test_sessions.py
 - interview.py
 - AuthService
@@ -123,7 +123,7 @@ Nodes (13): eslint, @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-r
 
 ### Community 5 - "AppRoutes.tsx"
 Cohesion: 0.10
-Nodes (31): Container(), ContainerProps, ProtectedRoute(), ProtectedRouteProps, StatusBadge(), StatusBadgeProps, RootLayout(), rootElement (+23 more)
+Nodes (32): Container(), ContainerProps, Navbar(), ProtectedRoute(), ProtectedRouteProps, StatusBadge(), StatusBadgeProps, RootLayout() (+24 more)
 
 ### Community 6 - "test_health.py"
 Cohesion: 0.22
@@ -186,24 +186,24 @@ Cohesion: 0.18
 Nodes (11): axios, dependencies, axios, react, react-dom, react-router-dom, zustand, react (+3 more)
 
 ### Community 38 - "patients.py"
-Cohesion: 0.06
-Nodes (50): create_patient(), get_patient(), lookup_patient_by_mobile(), get, patch, post, Session, UUID (+42 more)
+Cohesion: 0.05
+Nodes (48): create_patient(), get_patient(), lookup_patient_by_mobile(), get, patch, post, Session, UUID (+40 more)
 
 ### Community 39 - "useSessionStore.ts"
 Cohesion: 0.11
 Nodes (30): env, apiClient, TOKEN_KEY, AuthState, PatientState, SessionState, SystemState, HealthResponse (+22 more)
 
 ### Community 40 - "Base"
-Cohesion: 0.07
-Nodes (64): Base, Declarative base and shared metadata. A consistent naming convention makes…, Reusable model mixins (infrastructure only — no tables defined here). These…, Adds a UUID ``id`` primary key (never a mobile number / RFID / biometric)., Adds UTC ``created_at`` / ``updated_at`` columns., TimestampMixin, UUIDPrimaryKeyMixin, Session (+56 more)
+Cohesion: 0.06
+Nodes (70): Base, Declarative base and shared metadata. A consistent naming convention makes…, Reusable model mixins (infrastructure only — no tables defined here). These…, Adds a UUID ``id`` primary key (never a mobile number / RFID / biometric)., Adds UTC ``created_at`` / ``updated_at`` columns., TimestampMixin, UUIDPrimaryKeyMixin, Session (+62 more)
 
 ### Community 41 - "ConfigService"
 Cohesion: 0.08
 Nodes (36): list_department_consultants(), list_departments(), get, Session, UUID, Department configuration endpoints., list_languages(), get (+28 more)
 
-### Community 42 - "utcnow"
-Cohesion: 0.13
-Nodes (33): clear_session(), complete_session(), create_session(), get_consents(), get_session(), get, patch, post (+25 more)
+### Community 42 - "SessionService"
+Cohesion: 0.16
+Nodes (29): clear_session(), complete_session(), create_session(), get_consents(), get_session(), get, patch, post (+21 more)
 
 ### Community 43 - "test_sessions.py"
 Cohesion: 0.14
@@ -257,10 +257,10 @@ Nodes (6): Alembic migration environment. The database URL is pulled from applic
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `utcnow()` connect `utcnow` to `test_auth.py`, `router.py`, `endpoints/identity.py`, `patients.py`, `Base`, `interview.py`, `AuthService`, `auth_service.py`?**
-  _High betweenness centrality (0.065) - this node is a cross-community bridge._
+- **Why does `utcnow()` connect `Base` to `test_auth.py`, `router.py`, `endpoints/identity.py`, `patients.py`, `SessionService`, `interview.py`, `AuthService`, `auth_service.py`?**
+  _High betweenness centrality (0.064) - this node is a cross-community bridge._
 - **Why does `User` connect `Base` to `test_auth.py`, `endpoints/auth.py`, `deps.py`, `AuthService`, `auth_service.py`, `get_doctor_profile`, `get_current_staff_profile`, `get_admin_dashboard_stats`?**
-  _High betweenness centrality (0.037) - this node is a cross-community bridge._
+  _High betweenness centrality (0.036) - this node is a cross-community bridge._
 - **Why does `create_app()` connect `main.py` to `test_auth.py`, `test_sessions.py`, `endpoints/identity.py`?**
   _High betweenness centrality (0.031) - this node is a cross-community bridge._
 - **Are the 9 inferred relationships involving `User` (e.g. with `get_current_active_user()` and `get_current_user()`) actually correct?**

@@ -1268,6 +1268,19 @@
       "source_location": "L3"
     },
     {
+      "id": "frontend_src_pages_patient_interviewpage_chatmessage",
+      "label": "ChatMessage",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "AppRoutes.tsx",
+      "file_type": "code",
+      "norm_label": "chatmessage",
+      "source_file": "frontend/src/pages/patient/InterviewPage.tsx",
+      "source_location": "L7"
+    },
+    {
       "id": "frontend_src_utils_i18n_translationdict",
       "label": "TranslationDict",
       "_callable": true,
@@ -2914,7 +2927,7 @@
       "file_type": "code",
       "norm_label": "validate_transition()",
       "source_file": "backend/app/services/session/session_state_machine.py",
-      "source_location": "L45"
+      "source_location": "L48"
     },
     {
       "id": "backend_app_utils_datetime_utcnow",
@@ -3502,7 +3515,7 @@
       "file_type": "code",
       "norm_label": "consentpage()",
       "source_file": "frontend/src/pages/patient/ConsentPage.tsx",
-      "source_location": "L7"
+      "source_location": "L6"
     },
     {
       "id": "frontend_src_pages_patient_departmentpage_departmentpage",
@@ -3550,7 +3563,7 @@
       "file_type": "code",
       "norm_label": "interviewpage()",
       "source_file": "frontend/src/pages/patient/InterviewPage.tsx",
-      "source_location": "L6"
+      "source_location": "L15"
     },
     {
       "id": "frontend_src_pages_patient_interviewreadypage_interviewreadypage",
@@ -8611,7 +8624,7 @@
       "source_location": "L1"
     },
     {
-      "id": "backend_app_services_session_session_state_machine_rationale_46",
+      "id": "backend_app_services_session_session_state_machine_rationale_49",
       "label": "Validate whether transitioning from current_status to target_status is\u2026",
       "_origin": "ast",
       "community": 42,
@@ -8619,7 +8632,7 @@
       "file_type": "rationale",
       "norm_label": "validate whether transitioning from current_status to target_status is...",
       "source_file": "backend/app/services/session/session_state_machine.py",
-      "source_location": "L46"
+      "source_location": "L49"
     },
     {
       "id": "backend_app_utils_datetime_rationale_6",
@@ -12365,19 +12378,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/pages/patient/ConsentPage.tsx",
-      "source_location": "L17",
-      "weight": 1.0
-    },
-    {
-      "source": "frontend_src_pages_patient_consentpage_consentpage",
-      "target": "frontend_src_utils_i18n_usetranslation",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "frontend/src/pages/patient/ConsentPage.tsx",
-      "source_location": "L19",
+      "source_location": "L16",
       "weight": 1.0
     },
     {
@@ -12389,7 +12390,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/pages/patient/ConsentPage.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0
     },
     {
@@ -12454,18 +12455,6 @@
     },
     {
       "source": "frontend_src_pages_patient_interviewpage_interviewpage",
-      "target": "frontend_src_stores_usesessionstore_usesessionstore",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "frontend/src/pages/patient/InterviewPage.tsx",
-      "source_location": "L21",
-      "weight": 1.0
-    },
-    {
-      "source": "frontend_src_pages_patient_interviewpage_interviewpage",
       "target": "frontend_src_stores_usepatientstore_usepatientstore",
       "relation": "calls",
       "_origin": "ast",
@@ -12473,7 +12462,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/pages/patient/InterviewPage.tsx",
-      "source_location": "L8",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_pages_patient_interviewpage_interviewpage",
+      "target": "frontend_src_stores_usesessionstore_usesessionstore",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/pages/patient/InterviewPage.tsx",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -17637,18 +17638,6 @@
       "weight": 1.0
     },
     {
-      "source": "frontend_src_pages_patient_consentpage",
-      "target": "frontend_src_utils_i18n_usetranslation",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "frontend/src/pages/patient/ConsentPage.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
       "source": "frontend_src_pages_patient_departmentpage",
       "target": "frontend_src_components_container_container",
       "relation": "imports",
@@ -17778,6 +17767,18 @@
       "context": "import",
       "source_file": "frontend/src/pages/patient/InterviewPage.tsx",
       "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_pages_patient_interviewpage",
+      "target": "frontend_src_types_interview_nextquestion",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/pages/patient/InterviewPage.tsx",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -21081,18 +21082,6 @@
       "weight": 1.0
     },
     {
-      "source": "frontend_src_pages_patient_consentpage",
-      "target": "frontend_src_utils_i18n",
-      "relation": "imports_from",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "frontend/src/pages/patient/ConsentPage.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
       "source": "frontend_src_pages_patient_departmentpage",
       "target": "frontend_src_components_container",
       "relation": "imports_from",
@@ -21186,6 +21175,18 @@
       "context": "import",
       "source_file": "frontend/src/pages/patient/InterviewPage.tsx",
       "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_pages_patient_interviewpage",
+      "target": "frontend_src_types_index",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/pages/patient/InterviewPage.tsx",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -25465,7 +25466,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "backend/app/services/session/session_state_machine.py",
-      "source_location": "L45",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -27368,7 +27369,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/pages/patient/ConsentPage.tsx",
-      "source_location": "L7",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -27401,7 +27402,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/pages/patient/InterviewPage.tsx",
-      "source_location": "L6",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_pages_patient_interviewpage",
+      "target": "frontend_src_pages_patient_interviewpage_chatmessage",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/pages/patient/InterviewPage.tsx",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -31684,14 +31696,14 @@
       "weight": 1.0
     },
     {
-      "source": "backend_app_services_session_session_state_machine_rationale_46",
+      "source": "backend_app_services_session_session_state_machine_rationale_49",
       "target": "backend_app_services_session_session_state_machine_validate_transition",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "backend/app/services/session/session_state_machine.py",
-      "source_location": "L46",
+      "source_location": "L49",
       "weight": 1.0
     },
     {

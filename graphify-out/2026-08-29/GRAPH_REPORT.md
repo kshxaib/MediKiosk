@@ -1,11 +1,11 @@
 # Graph Report - MediKiosk  (2026-08-29)
 
 ## Corpus Check
-- 150 files · ~52,367 words
+- 150 files · ~52,731 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 924 nodes · 1915 edges · 66 communities (50 shown, 16 thin omitted)
+- 925 nodes · 1915 edges · 66 communities (50 shown, 16 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 88 edges (avg confidence: 0.94)
 - Token cost: 0 input · 0 output
 
@@ -122,8 +122,8 @@ Cohesion: 0.15
 Nodes (13): eslint, @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-refresh, devDependencies, eslint, @eslint/js, eslint-plugin-react-hooks (+5 more)
 
 ### Community 5 - "AppRoutes.tsx"
-Cohesion: 0.11
-Nodes (30): Container(), ContainerProps, ProtectedRoute(), ProtectedRouteProps, StatusBadge(), StatusBadgeProps, RootLayout(), rootElement (+22 more)
+Cohesion: 0.10
+Nodes (31): Container(), ContainerProps, ProtectedRoute(), ProtectedRouteProps, StatusBadge(), StatusBadgeProps, RootLayout(), rootElement (+23 more)
 
 ### Community 6 - "test_health.py"
 Cohesion: 0.22
@@ -250,7 +250,7 @@ Cohesion: 0.18
 Nodes (6): Alembic migration environment. The database URL is pulled from application…, get_settings(), Centralized application configuration. All runtime configuration is read from…, Settings, Database engine and session factory. Creating the engine does not open a…, BaseSettings
 
 ## Knowledge Gaps
-- **135 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+130 more)
+- **136 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+131 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -266,7 +266,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 9 inferred relationships involving `User` (e.g. with `get_current_active_user()` and `get_current_user()`) actually correct?**
   _`User` has 9 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `name`, `private`, `version` to the rest of the system?**
-  _135 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _136 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `MediKiosk` be split into smaller, more focused modules?**
   _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
 - **Should `test_auth.py` be split into smaller, more focused modules?**

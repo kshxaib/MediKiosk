@@ -252,9 +252,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/HomePage.tsx": {
-    "mtime": 1787938420.3587613,
-    "seen": 1787938501.4739597,
-    "ast_hash": "730529dc6116897ee8114205860a769e",
+    "mtime": 1787943451.9301963,
+    "seen": 1787944116.6440146,
+    "ast_hash": "847143444c40e100e556d1b1b5b69fa5",
     "semantic_hash": ""
   },
   "frontend/src/pages/NotFoundPage.tsx": {
@@ -960,15 +960,21 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/InterviewPage.tsx": {
-    "mtime": 1787943319.642033,
-    "seen": 1787943371.2181015,
-    "ast_hash": "81d1480f314aa671048a30ced29df795",
+    "mtime": 1787943803.6338296,
+    "seen": 1787944116.6440217,
+    "ast_hash": "310c4ca8e062b870038346b999a629a4",
     "semantic_hash": ""
   },
   "frontend/src/types/interview.ts": {
     "mtime": 1787942139.640761,
     "seen": 1787942185.726443,
     "ast_hash": "1607aa4217d119ab8d9ee370d9d737d4",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/Navbar.tsx": {
+    "mtime": 1787943535.3553498,
+    "seen": 1787944116.6440082,
+    "ast_hash": "0f744386a29431873dbc98aca236f41d",
     "semantic_hash": ""
   }
 }
