@@ -1,0 +1,19 @@
+# MediKiosk backend — Phase 1 foundation dependencies.
+# Pinned with lower bounds; versions resolved at install time.
+
+# Web framework
+fastapi>=0.115
+uvicorn[standard]>=0.30
+
+# Settings & validation
+pydantic>=2.9
+pydantic-settings>=2.5
+
+# Database
+SQLAlchemy>=2.0.35
+alembic>=1.13
+psycopg[binary]>=3.2
+
+# Testing
+pytest>=8.3
+httpx>=0.27

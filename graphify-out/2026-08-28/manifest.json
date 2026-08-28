@@ -1,0 +1,68 @@
+{
+  "frontend/eslint.config.js": {
+    "mtime": 1787898495.5167363,
+    "seen": 1787901972.1104605,
+    "ast_hash": "3aa4b57d7f08181d86bde52a4dcb7f22",
+    "semantic_hash": "3aa4b57d7f08181d86bde52a4dcb7f22"
+  },
+  "frontend/package.json": {
+    "mtime": 1787898495.5182276,
+    "seen": 1787901972.1104612,
+    "ast_hash": "a719af3558bc7d71fcfaf7947140ea44",
+    "semantic_hash": "a719af3558bc7d71fcfaf7947140ea44"
+  },
+  "frontend/src/App.jsx": {
+    "mtime": 1787898454.43662,
+    "seen": 1787901972.110462,
+    "ast_hash": "0b6326cb08b367ad5afe2f7e7a8ab722",
+    "semantic_hash": "0b6326cb08b367ad5afe2f7e7a8ab722"
+  },
+  "frontend/src/main.jsx": {
+    "mtime": 1787898454.445551,
+    "seen": 1787901972.1104627,
+    "ast_hash": "e13723e2574429d9a6d849727e3ff695",
+    "semantic_hash": "e13723e2574429d9a6d849727e3ff695"
+  },
+  "frontend/vite.config.js": {
+    "mtime": 1787898454.353337,
+    "seen": 1787901972.1104634,
+    "ast_hash": "5d54447744c19ccd28638a5c668d15ea",
+    "semantic_hash": "5d54447744c19ccd28638a5c668d15ea"
+  },
+  ".claude/settings.json": {
+    "mtime": 1787910198.8505888,
+    "seen": 1787910221.4146702,
+    "ast_hash": "0550c3c0b1cdae9ba4855f353a83d259",
+    "semantic_hash": "0550c3c0b1cdae9ba4855f353a83d259"
+  },
+  "CLAUDE.md": {
+    "mtime": 1787910198.8500853,
+    "seen": 1787912843.2750568,
+    "ast_hash": "8a6643a420fdad6bfb583523bc6cef16",
+    "semantic_hash": "8a6643a420fdad6bfb583523bc6cef16"
+  },
+  "PROJECT_REQUIREMENT.md": {
+    "mtime": 1787895196.4497685,
+    "seen": 1787912843.275059,
+    "ast_hash": "160f84abd99d902756e2efd974004346",
+    "semantic_hash": "160f84abd99d902756e2efd974004346"
+  },
+  "frontend/README.md": {
+    "mtime": 1787898495.5187368,
+    "seen": 1787912843.27506,
+    "ast_hash": "a28dc4cb878325f3e9e5649f3e1469ac",
+    "semantic_hash": "a28dc4cb878325f3e9e5649f3e1469ac"
+  },
+  "frontend/index.html": {
+    "mtime": 1787898495.4960303,
+    "seen": 1787912843.275061,
+    "ast_hash": "89150e536c4a99f73625f46f41f0f437",
+    "semantic_hash": "89150e536c4a99f73625f46f41f0f437"
+  },
+  "frontend/src/assets/hero.png": {
+    "mtime": 1787898454.4677339,
+    "seen": 1787912843.2750618,
+    "ast_hash": "aead493361b27e7510691c5d7072dfc1",
+    "semantic_hash": "aead493361b27e7510691c5d7072dfc1"
+  }
+}

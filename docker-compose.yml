@@ -1,0 +1,32 @@
+# PostgreSQL for MediKiosk local development.
+#
+# Usage:
+#   docker compose up -d db        # start Postgres in the background
+#   docker compose ps              # check status / health
+#   docker compose down            # stop (keeps data volume)
+#   docker compose down -v         # stop and delete the data volume
+#
+# Credentials here are development-only defaults and match backend/.env.example.
+# They are NOT secrets and MUST be overridden in any shared/production setup.
+
+services:
+  db:
+    image: postgres:16
+    container_name: medikiosk-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-medikiosk}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-medikiosk}
+      POSTGRES_DB: ${POSTGRES_DB:-medikiosk}
+    ports:
+      - "5432:5432"
+    volumes:
+      - medikiosk_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-medikiosk} -d ${POSTGRES_DB:-medikiosk}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  medikiosk_pgdata:
