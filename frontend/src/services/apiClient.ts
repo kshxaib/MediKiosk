@@ -18,7 +18,7 @@ export const apiClient = axios.create({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  timeout: 45000, // Face verification via InsightFace ArcFace on CPU can take up to 25s
+  timeout: 60000, // AI/LLM calls can take up to 15s + face verification 25s
 })
 
 // Request Interceptor: Attach JWT Token from storage

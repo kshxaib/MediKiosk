@@ -14,6 +14,11 @@ class AnswerCreate(BaseModel):
     source: str = Field(default="TOUCH", max_length=50)
     confidence: Optional[float] = None
     is_patient_corrected: bool = False
+    # Phase 5B: text of the question this answers, echoed back by the kiosk when
+    # the question was LLM-generated and therefore has no question_id. Used only
+    # to stop the same generated question from repeating. Untrusted — never used
+    # to decide category satisfaction.
+    asked_question_text: Optional[str] = Field(default=None, max_length=500)
 
 
 class AnswerRead(BaseModel):

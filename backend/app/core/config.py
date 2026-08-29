@@ -1,4 +1,4 @@
-"""Centralized application configuration.
+﻿"""Centralized application configuration.
 
 All runtime configuration is read from the environment (or an ``.env`` file)
 through a single Pydantic ``Settings`` object.
@@ -10,7 +10,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=(".env", "backend/.env"),
         env_file_encoding="utf-8",
         case_sensitive=True,
         extra="ignore",
@@ -42,6 +42,14 @@ class Settings(BaseSettings):
     FACE_SIMILARITY_THRESHOLD: float = 0.50
     FACE_DETECTION_SIZE: int = 640
 
+    # --- LLM / OpenAI (Phase 5B) ---
+    OPENAI_API_KEY: str = ""
+    # Deliberately a small, low-cost model: clinical intake needs structured
+    # extraction and question selection, not frontier reasoning.
+    OPENAI_MODEL: str = "gpt-5-mini"
+    LLM_TIMEOUT_SECONDS: float = 15.0
+    LLM_MAX_RETRIES: int = 2
+
     @property
     def cors_origins(self) -> list[str]:
         return [
@@ -49,6 +57,11 @@ class Settings(BaseSettings):
             for origin in self.BACKEND_CORS_ORIGINS.split(",")
             if origin.strip()
         ]
+
+    @property
+    def llm_enabled(self) -> bool:
+        """True only when a non-empty LLM API key is configured."""
+        return bool(self.OPENAI_API_KEY and self.OPENAI_API_KEY.strip())
 
 
 @lru_cache

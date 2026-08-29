@@ -25,7 +25,7 @@ export const InterviewPage: React.FC = () => {
     submitAnswer,
     completeSession,
     resetSession,
-    loading,
+    loading: sessionLoading,
     error: sessionError,
   } = useSessionStore()
 
@@ -33,6 +33,8 @@ export const InterviewPage: React.FC = () => {
   const [textAnswer, setTextAnswer] = useState('')
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [initialLoading, setInitialLoading] = useState(true)
+  const [isAiThinking, setIsAiThinking] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const chatEndRef = useRef<HTMLDivElement | null>(null)
@@ -51,7 +53,7 @@ export const InterviewPage: React.FC = () => {
       return [
         ...prev,
         {
-          id: `ai-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+          id: `ai-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
           sender: 'ai',
           text: q.question as string,
           category: q.category,
@@ -68,29 +70,65 @@ export const InterviewPage: React.FC = () => {
       return
     }
     if (currentSession?.id) {
-      fetchNextQuestion(currentSession.id).then((q) => {
-        if (q) addAIQuestionToHistory(q)
-      }).catch(() => {
-        // error handled in store
-      })
+      fetchNextQuestion(currentSession.id)
+        .then((q) => {
+          if (q) addAIQuestionToHistory(q)
+        })
+        .catch(() => {
+          setErrorMessage('Unable to load clinical intake question. Please tap Retry.')
+        })
+        .finally(() => {
+          setInitialLoading(false)
+        })
     }
   }, [currentPatient, currentSession?.id, navigate, fetchNextQuestion])
 
   useEffect(() => {
     scrollToBottom()
-  }, [chatHistory])
+  }, [chatHistory, isAiThinking])
+
+  // Validate form state
+  const qType = currentQuestion?.question_type || 'TEXT'
+  const isInputValid = () => {
+    if (submitting || isAiThinking) return false
+    if (qType === 'YES_NO' || qType === 'SINGLE_CHOICE') {
+      return Boolean(selectedOption)
+    }
+    if (qType === 'NUMBER') {
+      return textAnswer.trim().length > 0 && !isNaN(Number(textAnswer.trim()))
+    }
+    if (currentQuestion?.required) {
+      return textAnswer.trim().length > 0
+    }
+    return true
+  }
+
+  const handleRetry = async () => {
+    if (!currentSession) return
+    setErrorMessage(null)
+    setIsAiThinking(true)
+    try {
+      const q = await fetchNextQuestion(currentSession.id)
+      if (q && !q.completed) {
+        addAIQuestionToHistory(q)
+      }
+    } catch {
+      setErrorMessage('Failed to connect. Please tap Retry again.')
+    } finally {
+      setIsAiThinking(false)
+    }
+  }
 
   const handleSubmitAnswer = async () => {
-    if (!currentSession || !currentQuestion || submitting) return
+    if (!currentSession || !currentQuestion || submitting || isAiThinking) return
     setErrorMessage(null)
 
-    const qType = currentQuestion.question_type || 'TEXT'
     let rawVal: string | null
     let normVal: Record<string, unknown> | null
 
     if (qType === 'YES_NO' || qType === 'SINGLE_CHOICE') {
       if (!selectedOption) {
-        setErrorMessage('Please select an option to continue.')
+        setErrorMessage('Please select an option to proceed.')
         return
       }
       rawVal = selectedOption
@@ -104,26 +142,34 @@ export const InterviewPage: React.FC = () => {
       normVal = { value: Number(textAnswer.trim()) }
     } else {
       if (currentQuestion.required && !textAnswer.trim()) {
-        setErrorMessage('Please enter an answer to continue.')
+        setErrorMessage('Please enter your response to continue.')
         return
       }
       rawVal = textAnswer.trim() || null
       normVal = textAnswer.trim() ? { text: textAnswer.trim() } : null
     }
 
-    // Add patient response to chat history
+    // Add patient response to chat history immediately
     const userMsgText = rawVal || 'No response provided'
     setChatHistory((prev) => [
       ...prev,
       {
-        id: `pat-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+        id: `pat-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
         sender: 'patient',
         text: userMsgText,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
     ])
 
+    // Reset local inputs
+    const savedText = textAnswer
+    const savedOption = selectedOption
+    setTextAnswer('')
+    setSelectedOption(null)
+
     setSubmitting(true)
+    setIsAiThinking(true)
+
     try {
       await submitAnswer(currentSession.id, {
         patient_id: currentPatient?.id,
@@ -132,22 +178,26 @@ export const InterviewPage: React.FC = () => {
         normalized_answer: normVal,
         answer_type: qType,
         source: 'TOUCH',
+        // AI-generated follow-ups have no question_id; send the question text so
+        // the backend can attribute the answer and not repeat the question.
+        ...(currentQuestion.question_id
+          ? {}
+          : { asked_question_text: currentQuestion.question }),
       })
 
-      // Reset local inputs
-      setTextAnswer('')
-      setSelectedOption(null)
-
-      // Fetch next question and add to chat
+      // Fetch next adaptive question
       const nextQ = await fetchNextQuestion(currentSession.id)
       if (nextQ && !nextQ.completed) {
         addAIQuestionToHistory(nextQ)
       }
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Failed to submit answer'
-      setErrorMessage(msg)
+    } catch {
+      setErrorMessage('Something went wrong submitting your answer. Please tap Retry.')
+      // Restore previous entered input so patient does not have to retype
+      setTextAnswer(savedText)
+      setSelectedOption(savedOption)
     } finally {
       setSubmitting(false)
+      setIsAiThinking(false)
     }
   }
 
@@ -159,9 +209,8 @@ export const InterviewPage: React.FC = () => {
       resetSession()
       resetFlow()
       navigate('/')
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Failed to complete session'
-      setErrorMessage(msg)
+    } catch {
+      setErrorMessage('Failed to complete intake session. Please try again.')
     } finally {
       setSubmitting(false)
     }
@@ -179,9 +228,7 @@ export const InterviewPage: React.FC = () => {
   const totalQ = currentQuestion?.total_questions || 5
   const completedCount = currentQuestion?.completed_questions || 0
   const progressPercent = Math.min(100, Math.round((completedCount / totalQ) * 100))
-
   const isCompleted = interviewCompleted || currentQuestion?.completed
-  const qType = currentQuestion?.question_type || 'TEXT'
 
   return (
     <Container className="py-6 max-w-3xl mx-auto">
@@ -220,19 +267,35 @@ export const InterviewPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Error Card with Retry Button */}
       {(errorMessage || sessionError) && (
-        <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          {errorMessage || sessionError}
+        <div className="mb-4 rounded-xl border border-amber-300 bg-amber-50 p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">⚠️</span>
+            <div>
+              <div className="font-bold text-amber-900 text-sm">Something went wrong</div>
+              <div className="text-xs text-amber-800">{errorMessage || sessionError}</div>
+            </div>
+          </div>
+          <button
+            onClick={handleRetry}
+            disabled={submitting || isAiThinking}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-sm transition cursor-pointer shrink-0"
+          >
+            Retry Question ⟳
+          </button>
         </div>
       )}
 
-      {/* CHAT HISTORY — questions and answers only */}
-      <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-4 sm:p-6 mb-5 min-h-[240px] max-h-[400px] overflow-y-auto space-y-4 shadow-inner">
-        {chatHistory.length === 0 && (
-          <div className="flex items-center justify-center h-32 text-slate-400 text-sm">
-            Loading first question...
+      {/* CHAT HISTORY */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-4 sm:p-6 mb-5 min-h-[260px] max-h-[420px] overflow-y-auto space-y-4 shadow-inner">
+        {initialLoading && chatHistory.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-48 space-y-3">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+            <div className="text-sm font-bold text-slate-500">Initializing clinical consultation...</div>
           </div>
         )}
+
         {chatHistory.map((msg) => {
           const isAI = msg.sender === 'ai'
           return (
@@ -270,10 +333,28 @@ export const InterviewPage: React.FC = () => {
             </div>
           )
         })}
+
+        {/* AI Typing Indicator */}
+        {isAiThinking && (
+          <div className="flex items-end gap-3 justify-start">
+            <div className="h-9 w-9 rounded-full bg-blue-600 text-white flex items-center justify-center text-base shadow-sm shrink-0 mb-0.5">
+              🩺
+            </div>
+            <div className="rounded-2xl rounded-bl-sm bg-white border border-slate-200 px-4 py-3 shadow-xs">
+              <div className="flex items-center space-x-1.5 py-1">
+                <span className="text-xs font-bold text-slate-500 mr-2">Evaluating response</span>
+                <span className="h-2 w-2 rounded-full bg-blue-600 animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="h-2 w-2 rounded-full bg-blue-600 animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="h-2 w-2 rounded-full bg-blue-600 animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div ref={chatEndRef} />
       </div>
 
-      {/* ANSWER INPUT — only shown when not completed */}
+      {/* ANSWER INPUT AREA */}
       {isCompleted ? (
         <div className="rounded-2xl border border-emerald-300 bg-emerald-50 p-6 shadow-sm text-center">
           <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 font-bold text-2xl mb-3">
@@ -287,9 +368,9 @@ export const InterviewPage: React.FC = () => {
             <button
               onClick={handleCompleteIntake}
               disabled={submitting}
-              className="rounded-xl bg-emerald-700 px-8 py-4 text-base font-bold text-white shadow-md hover:bg-emerald-600 transition cursor-pointer"
+              className="rounded-xl bg-emerald-700 px-8 py-4 text-base font-bold text-white shadow-md hover:bg-emerald-600 transition disabled:opacity-50 cursor-pointer"
             >
-              Finish Intake & Return to Home →
+              {submitting ? 'Finishing...' : 'Finish Intake & Return to Home →'}
             </button>
           </div>
         </div>
@@ -308,14 +389,18 @@ export const InterviewPage: React.FC = () => {
                   <button
                     key={opt.label}
                     type="button"
-                    onClick={() => setSelectedOption(opt.label)}
-                    className={`py-4 rounded-xl border-2 font-bold text-base transition-all cursor-pointer ${
+                    disabled={submitting || isAiThinking}
+                    onClick={() => {
+                      setSelectedOption(opt.label)
+                      setErrorMessage(null)
+                    }}
+                    className={`py-4 rounded-xl border-2 font-bold text-base transition-all cursor-pointer disabled:opacity-50 ${
                       isSelected
                         ? opt.color === 'emerald'
-                          ? 'border-emerald-600 bg-emerald-50 text-emerald-900 shadow-md'
+                          ? 'border-emerald-600 bg-emerald-50 text-emerald-900 shadow-md ring-2 ring-emerald-500/20'
                           : opt.color === 'rose'
-                          ? 'border-rose-600 bg-rose-50 text-rose-900 shadow-md'
-                          : 'border-slate-800 bg-slate-100 text-slate-900 shadow-md'
+                          ? 'border-rose-600 bg-rose-50 text-rose-900 shadow-md ring-2 ring-rose-500/20'
+                          : 'border-slate-800 bg-slate-100 text-slate-900 shadow-md ring-2 ring-slate-500/20'
                         : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700'
                     }`}
                   >
@@ -338,15 +423,25 @@ export const InterviewPage: React.FC = () => {
                   <button
                     key={optStr}
                     type="button"
-                    onClick={() => setSelectedOption(optStr)}
-                    className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all text-left cursor-pointer ${
+                    disabled={submitting || isAiThinking}
+                    onClick={() => {
+                      setSelectedOption(optStr)
+                      setErrorMessage(null)
+                    }}
+                    className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all text-left cursor-pointer disabled:opacity-50 ${
                       isSelected
-                        ? 'border-blue-600 bg-blue-50 text-blue-900 font-bold shadow-md'
+                        ? 'border-blue-600 bg-blue-50 text-blue-900 font-bold shadow-md ring-2 ring-blue-500/20'
                         : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-800 font-medium'
                     }`}
                   >
                     <span>{optStr}</span>
-                    <span className={`h-5 w-5 rounded-full border flex items-center justify-center text-xs shrink-0 ${isSelected ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-300 text-transparent'}`}>
+                    <span
+                      className={`h-5 w-5 rounded-full border flex items-center justify-center text-xs shrink-0 ${
+                        isSelected
+                          ? 'border-blue-600 bg-blue-600 text-white font-bold'
+                          : 'border-slate-300 text-transparent'
+                      }`}
+                    >
                       ✓
                     </span>
                   </button>
@@ -360,20 +455,28 @@ export const InterviewPage: React.FC = () => {
             <div className="space-y-3 mb-4">
               <input
                 type="number"
+                disabled={submitting || isAiThinking}
                 value={textAnswer}
-                onChange={(e) => setTextAnswer(e.target.value)}
+                onChange={(e) => {
+                  setTextAnswer(e.target.value)
+                  setErrorMessage(null)
+                }}
                 placeholder="Enter a number..."
-                className="w-full rounded-xl border-2 border-slate-300 px-4 py-3 text-xl font-mono font-bold text-slate-900 focus:border-blue-600 focus:outline-hidden"
+                className="w-full rounded-xl border-2 border-slate-300 px-4 py-3 text-xl font-mono font-bold text-slate-900 focus:border-blue-600 focus:outline-hidden disabled:bg-slate-100"
               />
               <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5">
                 {severityScale.map((val) => (
                   <button
                     key={val}
                     type="button"
-                    onClick={() => setTextAnswer(val.toString())}
-                    className={`py-2.5 rounded-lg border-2 font-bold text-xs transition cursor-pointer ${
+                    disabled={submitting || isAiThinking}
+                    onClick={() => {
+                      setTextAnswer(val.toString())
+                      setErrorMessage(null)
+                    }}
+                    className={`py-2.5 rounded-lg border-2 font-bold text-xs transition cursor-pointer disabled:opacity-50 ${
                       textAnswer === val.toString()
-                        ? 'border-blue-600 bg-blue-600 text-white'
+                        ? 'border-blue-600 bg-blue-600 text-white shadow-sm'
                         : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-800'
                     }`}
                   >
@@ -389,10 +492,14 @@ export const InterviewPage: React.FC = () => {
             <div className="space-y-3 mb-4">
               <textarea
                 rows={3}
+                disabled={submitting || isAiThinking}
                 value={textAnswer}
-                onChange={(e) => setTextAnswer(e.target.value)}
+                onChange={(e) => {
+                  setTextAnswer(e.target.value)
+                  setErrorMessage(null)
+                }}
                 placeholder="Type your response here..."
-                className="w-full rounded-xl border-2 border-slate-300 p-4 text-base text-slate-900 focus:border-blue-600 focus:outline-hidden leading-relaxed"
+                className="w-full rounded-xl border-2 border-slate-300 p-4 text-base text-slate-900 focus:border-blue-600 focus:outline-hidden leading-relaxed disabled:bg-slate-100"
               />
               <div className="flex flex-wrap gap-1.5 items-center">
                 <span className="text-[11px] font-bold text-slate-400 mr-1">Quick:</span>
@@ -400,8 +507,12 @@ export const InterviewPage: React.FC = () => {
                   <button
                     key={chip}
                     type="button"
-                    onClick={() => setTextAnswer((prev) => (prev ? `${prev}, ${chip}` : chip))}
-                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer"
+                    disabled={submitting || isAiThinking}
+                    onClick={() => {
+                      setTextAnswer((prev) => (prev ? `${prev}, ${chip}` : chip))
+                      setErrorMessage(null)
+                    }}
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer disabled:opacity-50"
                   >
                     + {chip}
                   </button>
@@ -410,13 +521,20 @@ export const InterviewPage: React.FC = () => {
             </div>
           )}
 
-          {/* Submit */}
+          {/* Submit Button with Loading Spinner */}
           <button
             onClick={handleSubmitAnswer}
-            disabled={submitting || loading}
-            className="w-full rounded-xl bg-blue-600 py-3.5 text-base font-bold text-white shadow-md hover:bg-blue-500 transition disabled:opacity-50 cursor-pointer"
+            disabled={!isInputValid() || sessionLoading}
+            className="w-full rounded-xl bg-blue-600 py-3.5 text-base font-bold text-white shadow-md hover:bg-blue-500 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
           >
-            {submitting ? 'Submitting...' : 'Submit & Continue →'}
+            {submitting || isAiThinking ? (
+              <>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent inline-block" />
+                <span>Processing response...</span>
+              </>
+            ) : (
+              <span>Submit Response & Continue →</span>
+            )}
           </button>
         </div>
       )}

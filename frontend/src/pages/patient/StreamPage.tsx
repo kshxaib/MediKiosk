@@ -17,7 +17,7 @@ export const StreamPage: React.FC = () => {
     error: sessionError,
   } = useSessionStore()
 
-  const [submitting, setSubmitting] = useState(false)
+  const [submittingStreamId, setSubmittingStreamId] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
@@ -29,9 +29,9 @@ export const StreamPage: React.FC = () => {
   }, [currentPatient, navigate, fetchStreams])
 
   const handleSelectStream = async (stream: MedicalStream) => {
-    if (!currentSession || submitting) return
+    if (!currentSession || submittingStreamId) return
     setErrorMessage(null)
-    setSubmitting(true)
+    setSubmittingStreamId(stream.id)
 
     try {
       setStream(stream)
@@ -43,7 +43,7 @@ export const StreamPage: React.FC = () => {
       const msg = err instanceof Error ? err.message : 'Failed to select medical stream'
       setErrorMessage(msg)
     } finally {
-      setSubmitting(false)
+      setSubmittingStreamId(null)
     }
   }
 
@@ -62,44 +62,69 @@ export const StreamPage: React.FC = () => {
       </div>
 
       {(errorMessage || sessionError) && (
-        <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          {errorMessage || sessionError}
+        <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 flex items-center justify-between">
+          <span>{errorMessage || sessionError}</span>
+          <button
+            onClick={() => setErrorMessage(null)}
+            className="text-red-500 hover:text-red-700 text-xs font-bold ml-2 cursor-pointer"
+          >
+            ✕
+          </button>
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {availableStreams.map((stream) => {
-          const isModern = stream.code === 'MODERN_MEDICINE'
+      {loading && availableStreams.length === 0 ? (
+        <div className="flex flex-col items-center justify-center h-48 space-y-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+          <div className="text-sm font-bold text-slate-500">Loading available medical streams...</div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {availableStreams.map((stream) => {
+            const isModern = stream.code === 'MODERN_MEDICINE'
+            const isSelected = submittingStreamId === stream.id
 
-          return (
-            <button
-              key={stream.id}
-              onClick={() => handleSelectStream(stream)}
-              disabled={submitting || loading}
-              className="flex flex-col items-start p-6 rounded-2xl border-2 border-slate-200 bg-white hover:border-blue-500 hover:shadow-md transition text-left cursor-pointer group"
-            >
-              <div className="flex items-center justify-between w-full mb-3">
-                <span className="text-3xl">{isModern ? '🩺' : '🌿'}</span>
-                <span className="rounded-full bg-slate-100 group-hover:bg-blue-100 text-slate-700 group-hover:text-blue-700 px-3 py-1 text-xs font-bold">
-                  {stream.code}
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition">
-                {stream.name}
-              </h3>
-              <p className="mt-2 text-xs text-slate-500 leading-relaxed">
-                {stream.description ||
-                  (isModern
-                    ? 'Standard MBBS clinical history, symptoms, duration, and organ-system examination.'
-                    : 'Holistic Ayurvedic assessment including Prakriti, Agni, and Dosha analysis.')}
-              </p>
-              <div className="mt-6 font-bold text-xs text-blue-600 group-hover:translate-x-1 transition-transform">
-                Select {stream.name} →
-              </div>
-            </button>
-          )
-        })}
-      </div>
+            return (
+              <button
+                key={stream.id}
+                onClick={() => handleSelectStream(stream)}
+                disabled={Boolean(submittingStreamId)}
+                className={`flex flex-col items-start p-6 rounded-2xl border-2 transition text-left cursor-pointer group relative ${
+                  isSelected
+                    ? 'border-blue-600 bg-blue-50/50 shadow-md ring-2 ring-blue-500/20'
+                    : 'border-slate-200 bg-white hover:border-blue-500 hover:shadow-md'
+                }`}
+              >
+                <div className="flex items-center justify-between w-full mb-3">
+                  <span className="text-3xl">{isModern ? '🩺' : '🌿'}</span>
+                  <span className="rounded-full bg-slate-100 group-hover:bg-blue-100 text-slate-700 group-hover:text-blue-700 px-3 py-1 text-xs font-bold">
+                    {stream.code}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition">
+                  {stream.name}
+                </h3>
+                <p className="mt-2 text-xs text-slate-500 leading-relaxed">
+                  {stream.description ||
+                    (isModern
+                      ? 'Standard MBBS clinical history, symptoms, duration, and organ-system examination.'
+                      : 'Holistic Ayurvedic assessment including Prakriti, Agni, and Dosha analysis.')}
+                </p>
+                <div className="mt-6 font-bold text-xs text-blue-600 flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
+                  {isSelected ? (
+                    <>
+                      <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-blue-600 border-t-transparent inline-block" />
+                      <span>Saving selection...</span>
+                    </>
+                  ) : (
+                    <span>Select {stream.name} →</span>
+                  )}
+                </div>
+              </button>
+            )
+          })}
+        </div>
+      )}
     </Container>
   )
 }

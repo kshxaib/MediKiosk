@@ -11,12 +11,6 @@
     "ast_hash": "d89b9dd15848f6473367d9bf8be1a10a",
     "semantic_hash": ""
   },
-  ".claude/settings.json": {
-    "mtime": 1787934643.07711,
-    "seen": 1787936338.69345,
-    "ast_hash": "ea9ceffaad575132eea279f7d03cd6b0",
-    "semantic_hash": ""
-  },
   "CLAUDE.md": {
     "mtime": 1787910198.8500853,
     "seen": 1787912843.2750568,
@@ -42,9 +36,9 @@
     "semantic_hash": ""
   },
   ".claude/settings.local.json": {
-    "mtime": 1787920015.924312,
-    "seen": 1787920097.2796922,
-    "ast_hash": "42459dc19b14502ebc12c45fefb96ef6",
+    "mtime": 1788007216.5367403,
+    "seen": 1788007866.501963,
+    "ast_hash": "e9b273927da78f852cb37f891b71e1ff",
     "semantic_hash": ""
   },
   "backend/alembic/env.py": {
@@ -114,9 +108,9 @@
     "semantic_hash": ""
   },
   "backend/app/core/config.py": {
-    "mtime": 1787933469.7419436,
-    "seen": 1787934059.667489,
-    "ast_hash": "8d56d9ee558b31acdee93de58bc6ee4e",
+    "mtime": 1788006029.7962842,
+    "seen": 1788007866.5020041,
+    "ast_hash": "4062adaf6337ca9de7a5504bbc6a1fcd",
     "semantic_hash": ""
   },
   "backend/app/core/exceptions.py": {
@@ -204,9 +198,9 @@
     "semantic_hash": ""
   },
   "backend/tests/conftest.py": {
-    "mtime": 1787918742.7767296,
-    "seen": 1787920097.2797148,
-    "ast_hash": "1103d0a170ce3a14213ad6f38b33cd0a",
+    "mtime": 1788007032.900689,
+    "seen": 1788007866.5020723,
+    "ast_hash": "560a6a2b075b083ab3613963caa6deb2",
     "semantic_hash": ""
   },
   "backend/tests/test_config.py": {
@@ -252,9 +246,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/HomePage.tsx": {
-    "mtime": 1787938420.3587613,
-    "seen": 1787938501.4739597,
-    "ast_hash": "730529dc6116897ee8114205860a769e",
+    "mtime": 1787943451.9301963,
+    "seen": 1787944116.6440146,
+    "ast_hash": "847143444c40e100e556d1b1b5b69fa5",
     "semantic_hash": ""
   },
   "frontend/src/pages/NotFoundPage.tsx": {
@@ -276,9 +270,9 @@
     "semantic_hash": ""
   },
   "frontend/src/services/apiClient.ts": {
-    "mtime": 1787935776.4490657,
-    "seen": 1787936338.693692,
-    "ast_hash": "3b684d78ca6d792b8a16a79a292c7642",
+    "mtime": 1787947160.8710558,
+    "seen": 1787947217.9314027,
+    "ast_hash": "228c2b7e4f92228b233a741bcbc4a191",
     "semantic_hash": ""
   },
   "frontend/src/types/api.ts": {
@@ -390,9 +384,9 @@
     "semantic_hash": ""
   },
   "backend/requirements.txt": {
-    "mtime": 1787925342.7037241,
-    "seen": 1787925480.0931258,
-    "ast_hash": "f9c9c8769b4cf8b15131f3974cadb43d",
+    "mtime": 1788006941.9605114,
+    "seen": 1788007866.5021434,
+    "ast_hash": "289c2911cd34623f8d280a655a916a17",
     "semantic_hash": ""
   },
   "docker-compose.yml": {
@@ -648,15 +642,15 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/MobilePage.tsx": {
-    "mtime": 1787941135.0073605,
-    "seen": 1787942185.7264304,
-    "ast_hash": "be8fbe4a1800f7acb2712b198db67346",
+    "mtime": 1787950125.4216452,
+    "seen": 1787950267.1085687,
+    "ast_hash": "c7427a052e0a9e201624fbfacd1a6fe3",
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/RegisterPage.tsx": {
-    "mtime": 1787941279.234268,
-    "seen": 1787942185.7264314,
-    "ast_hash": "e03441f1e7ef70ee2f6bf0a118706034",
+    "mtime": 1787949867.9147613,
+    "seen": 1787950267.1085694,
+    "ast_hash": "94e510b92b8cd7761235cde7036b0d30",
     "semantic_hash": ""
   },
   "frontend/src/stores/usePatientStore.ts": {
@@ -834,15 +828,15 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/ConsentPage.tsx": {
-    "mtime": 1787943125.8052197,
-    "seen": 1787943371.2180982,
-    "ast_hash": "701596d86aab78baaaaf4d884cccfc16",
+    "mtime": 1787950086.24922,
+    "seen": 1787950267.1085627,
+    "ast_hash": "d533dd16fba5fdb27ce264e89edf200d",
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/DepartmentPage.tsx": {
-    "mtime": 1787943125.8052197,
-    "seen": 1787943371.218099,
-    "ast_hash": "daf177bf50852c4ea6e093e4d9d5df00",
+    "mtime": 1787950086.2600725,
+    "seen": 1787950267.1085637,
+    "ast_hash": "2bc5381139b5bb2d570c6cd366aa5a8f",
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/InterviewReadyPage.tsx": {
@@ -858,9 +852,9 @@
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/StreamPage.tsx": {
-    "mtime": 1787943125.8052197,
-    "seen": 1787943371.2181063,
-    "ast_hash": "7a66eb2ed2a80907b434364a80cf4a92",
+    "mtime": 1787950086.258042,
+    "seen": 1787950267.1085703,
+    "ast_hash": "c0bd28bf48b16d76fa9657561c208415",
     "semantic_hash": ""
   },
   "frontend/src/stores/useSessionStore.ts": {
@@ -888,9 +882,9 @@
     "semantic_hash": ""
   },
   "backend/app/api/v1/endpoints/interview.py": {
-    "mtime": 1787941947.300414,
-    "seen": 1787942185.726335,
-    "ast_hash": "930a738ecd5d7eb69777875af610b329",
+    "mtime": 1788006751.452842,
+    "seen": 1788007866.5019963,
+    "ast_hash": "eea9d44e2e85729da1da674e9372efd6",
     "semantic_hash": ""
   },
   "backend/app/models/answer.py": {
@@ -912,9 +906,9 @@
     "semantic_hash": ""
   },
   "backend/app/schemas/answer.py": {
-    "mtime": 1787941874.2286327,
-    "seen": 1787942185.7263677,
-    "ast_hash": "ae868c7b91440ee8477947fdaf5b7c80",
+    "mtime": 1788006615.662745,
+    "seen": 1788007866.5020294,
+    "ast_hash": "f4347b1be816fafeeab330ef82e3e2f0",
     "semantic_hash": ""
   },
   "backend/app/schemas/clinical_workflow.py": {
@@ -924,27 +918,27 @@
     "semantic_hash": ""
   },
   "backend/app/schemas/question.py": {
-    "mtime": 1787941874.2286327,
-    "seen": 1787942185.7263772,
-    "ast_hash": "76639f192751c35310be602ce42312a0",
+    "mtime": 1788006722.3702755,
+    "seen": 1788007866.5020382,
+    "ast_hash": "57c11dc045094032e272731d1f9209eb",
     "semantic_hash": ""
   },
   "backend/app/services/interview/__init__.py": {
-    "mtime": 1787941898.8788235,
-    "seen": 1787942185.726393,
-    "ast_hash": "183398d6999905660a5b28cdf123394b",
+    "mtime": 1787946765.4533863,
+    "seen": 1787947217.9313443,
+    "ast_hash": "de3bb10ee4a1eec34fafe5f6865c79f7",
     "semantic_hash": ""
   },
   "backend/app/services/interview/answer_service.py": {
-    "mtime": 1787942039.290079,
-    "seen": 1787942185.7263942,
-    "ast_hash": "abfee68d00edcf95d49e45a02056047c",
+    "mtime": 1788006595.3861759,
+    "seen": 1788007866.502055,
+    "ast_hash": "1d225f85b94efa4200eef58911ff3fc4",
     "semantic_hash": ""
   },
   "backend/app/services/interview/question_service.py": {
-    "mtime": 1787941898.8772888,
-    "seen": 1787942185.726395,
-    "ast_hash": "0b06ac2705d197e0e33abecc431fe984",
+    "mtime": 1788010499.4890933,
+    "seen": 1788010923.983864,
+    "ast_hash": "d18afd1c9cd9fa47f703b0f355ead904",
     "semantic_hash": ""
   },
   "backend/app/services/interview/workflow_service.py": {
@@ -954,21 +948,75 @@
     "semantic_hash": ""
   },
   "backend/tests/test_interview.py": {
-    "mtime": 1787941959.1322887,
-    "seen": 1787942185.7264097,
-    "ast_hash": "f01272ef4f8e6635c94e3660b21d5872",
+    "mtime": 1788010728.222006,
+    "seen": 1788010923.983884,
+    "ast_hash": "eb25deec535dc060f174d80d9a50d291",
     "semantic_hash": ""
   },
   "frontend/src/pages/patient/InterviewPage.tsx": {
-    "mtime": 1787943319.642033,
-    "seen": 1787943371.2181015,
-    "ast_hash": "81d1480f314aa671048a30ced29df795",
+    "mtime": 1788007528.3441105,
+    "seen": 1788007866.5020998,
+    "ast_hash": "5bf41b38070bc54b6cf4327d4d56f1bb",
     "semantic_hash": ""
   },
   "frontend/src/types/interview.ts": {
-    "mtime": 1787942139.640761,
-    "seen": 1787942185.726443,
-    "ast_hash": "1607aa4217d119ab8d9ee370d9d737d4",
+    "mtime": 1788007518.4815195,
+    "seen": 1788007866.5021205,
+    "ast_hash": "5a4432c36878ab2293efac70ef1b40b7",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/Navbar.tsx": {
+    "mtime": 1787943535.3553498,
+    "seen": 1787944116.6440082,
+    "ast_hash": "0f744386a29431873dbc98aca236f41d",
+    "semantic_hash": ""
+  },
+  "backend/app/services/llm/__init__.py": {
+    "mtime": 1788006389.9335716,
+    "seen": 1788007866.5020595,
+    "ast_hash": "bced9f6c5b4a653a4f92604caf738d43",
+    "semantic_hash": ""
+  },
+  "backend/app/services/llm/base.py": {
+    "mtime": 1788006309.86333,
+    "seen": 1788007866.5020602,
+    "ast_hash": "9d5b1d0a54cc26b00b3520cbb8398586",
+    "semantic_hash": ""
+  },
+  "backend/app/services/llm/prompts.py": {
+    "mtime": 1788006285.2082727,
+    "seen": 1788007866.502062,
+    "ast_hash": "dc09f77f5852ddd957d7e9b0617d229a",
+    "semantic_hash": ""
+  },
+  "backend/app/services/llm/schemas.py": {
+    "mtime": 1788006171.946422,
+    "seen": 1788007866.502063,
+    "ast_hash": "880a48a07e3592c7045383f1eaf56936",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_llm_service.py": {
+    "mtime": 1788010657.5382192,
+    "seen": 1788010923.9838848,
+    "ast_hash": "409cb456aa6312bf7d2ef6e4048350dc",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_llm_smoke.py": {
+    "mtime": 1788007191.8263907,
+    "seen": 1788007866.5020792,
+    "ast_hash": "a5fa436e4bb2aee34a79a6caf3cabea9",
+    "semantic_hash": ""
+  },
+  "backend/app/services/interview/clinical_facts.py": {
+    "mtime": 1788010471.551229,
+    "seen": 1788010923.9838622,
+    "ast_hash": "20d8b2c1dfd2b68d67a15cd379a3c875",
+    "semantic_hash": ""
+  },
+  "backend/app/services/llm/openai_service.py": {
+    "mtime": 1788006369.0281117,
+    "seen": 1788007866.5020611,
+    "ast_hash": "fdd5d13eb1dd6a3f08bc00309ac9e5e8",
     "semantic_hash": ""
   }
 }
