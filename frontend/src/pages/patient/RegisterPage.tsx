@@ -1,11 +1,21 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Container } from '../../components/Container'
+import { NumericKeypad } from '../../components/NumericKeypad'
 import { usePatientStore } from '../../stores'
+import { cn } from '../../utils/cn'
+
+const MOBILE_LENGTH = 10
 
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate()
-  const { enteredMobile, registerPatient, registrationStatus, registrationError } = usePatientStore()
+  const {
+    enteredMobile,
+    setEnteredMobile,
+    registerPatient,
+    registrationStatus,
+    registrationError,
+  } = usePatientStore()
 
   const [fullName, setFullName] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
@@ -13,8 +23,30 @@ export const RegisterPage: React.FC = () => {
   const [gender, setGender] = useState<string>('OTHER')
   const [email, setEmail] = useState('')
   const [validationError, setValidationError] = useState<string | null>(null)
+  // Seeded from the lookup step, but editable here on the touchscreen so a
+  // mistyped number can be corrected without going back.
+  const [mobile, setMobile] = useState(enteredMobile || '')
 
   const isSubmitting = registrationStatus === 'submitting'
+  const isMobileComplete = mobile.length === MOBILE_LENGTH
+
+  // Functional updates so rapid taps can never read a stale value.
+  const appendDigit = (digit: string) => {
+    setMobile((prev) =>
+      prev.length >= MOBILE_LENGTH ? prev : (prev + digit).replace(/\D/g, ''),
+    )
+    setValidationError(null)
+  }
+
+  const backspace = () => {
+    setMobile((prev) => prev.slice(0, -1))
+    setValidationError(null)
+  }
+
+  const clearAll = () => {
+    setMobile('')
+    setValidationError(null)
+  }
 
   const handleDobChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dob = e.target.value
@@ -37,15 +69,22 @@ export const RegisterPage: React.FC = () => {
       setValidationError('Full Name is required.')
       return
     }
-    if (!enteredMobile) {
-      setValidationError('Mobile number is missing. Please go back to the mobile lookup step.')
+    if (!mobile) {
+      setValidationError('Mobile number is missing. Please enter it on the keypad below.')
       return
     }
+    if (!isMobileComplete) {
+      setValidationError('Please enter a valid 10-digit mobile number.')
+      return
+    }
+
+    // Keep the shared flow state in step with what was entered here.
+    setEnteredMobile(mobile)
 
     try {
       await registerPatient({
         full_name: fullName.trim(),
-        mobile_number: enteredMobile,
+        mobile_number: mobile,
         date_of_birth: dateOfBirth || null,
         age: age ? parseInt(age, 10) : null,
         gender: gender || 'OTHER',
@@ -58,6 +97,9 @@ export const RegisterPage: React.FC = () => {
       // Store sets registrationError
     }
   }
+
+  // Ten fixed slots so the number stays readable and never reflows.
+  const slots = Array.from({ length: MOBILE_LENGTH }, (_, i) => mobile[i] ?? null)
 
   return (
     <Container className="py-8 max-w-xl mx-auto">
@@ -88,14 +130,46 @@ export const RegisterPage: React.FC = () => {
 
         <form onSubmit={handleRegister} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-              Mobile Number
-            </label>
-            <input
-              type="text"
-              disabled
-              value={`+91 ${enteredMobile}`}
-              className="w-full rounded-xl border border-slate-200 bg-slate-100 px-4 py-2.5 font-mono font-bold text-slate-600 text-sm cursor-not-allowed"
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                Mobile Number *
+              </label>
+              <span
+                className={cn(
+                  'font-mono text-sm font-bold',
+                  isMobileComplete ? 'text-emerald-600' : 'text-slate-400',
+                )}
+              >
+                {mobile.length} / {MOBILE_LENGTH}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 rounded-2xl border-2 border-slate-200 bg-slate-50 px-3 py-4 sm:px-4">
+              <span className="select-none font-mono text-2xl font-bold text-slate-500">+91</span>
+              <div className="flex flex-1 items-end justify-between gap-0.5">
+                {slots.map((digit, i) => (
+                  <span
+                    key={i}
+                    className={cn(
+                      'flex-1 text-center font-mono text-3xl font-black tabular-nums',
+                      digit ? 'text-slate-900' : 'text-slate-300',
+                    )}
+                  >
+                    {digit ?? '·'}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Same on-screen keypad component as the lookup step */}
+            <NumericKeypad
+              value={mobile}
+              onAppend={appendDigit}
+              onBackspace={backspace}
+              onClear={clearAll}
+              maxLength={MOBILE_LENGTH}
+              disabled={isSubmitting}
+              className="mt-3"
             />
           </div>
 
@@ -188,7 +262,7 @@ export const RegisterPage: React.FC = () => {
           <div className="pt-2">
             <button
               type="submit"
-              disabled={isSubmitting || !fullName.trim()}
+              disabled={isSubmitting || !fullName.trim() || !isMobileComplete}
               className="w-full rounded-xl bg-blue-600 py-3.5 text-base font-bold text-white shadow-sm hover:bg-blue-500 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
