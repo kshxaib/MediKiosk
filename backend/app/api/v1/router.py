@@ -4,6 +4,7 @@ from fastapi import APIRouter
 from app.api.v1.endpoints import (
     admin,
     auth,
+    cases,
     config,
     departments,
     doctor,
@@ -29,3 +30,4 @@ api_router.include_router(streams.router)
 api_router.include_router(departments.router)
 api_router.include_router(sessions.router)
 api_router.include_router(interview.router)
+api_router.include_router(cases.router)

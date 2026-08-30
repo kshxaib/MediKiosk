@@ -34,6 +34,7 @@ SECURITY:
 """
 from __future__ import annotations
 
+import json
 import logging
 import time
 from collections.abc import Sequence
@@ -46,6 +47,7 @@ from app.core.config import settings
 from app.services.llm.base import BaseLLMService, LLMUnavailableError
 from app.services.llm.prompts import (
     ANSWER_EXTRACTION_SYSTEM_PROMPT,
+    CASE_SUMMARY_SYSTEM_PROMPT,
     NEXT_QUESTION_SYSTEM_PROMPT,
     PROMPT_VERSION,
 )
@@ -65,6 +67,9 @@ MAX_QUESTION_LENGTH = 300
 
 # Truncation applied to any single patient answer placed in the LLM context.
 MAX_ANSWER_CHARS = 400
+
+# Cap on the serialized structured summary sent for narrative rendering.
+MAX_SUMMARY_PAYLOAD_CHARS = 20000
 
 
 def _contains_prohibited_content(text: str) -> bool:
@@ -215,8 +220,67 @@ class OpenAIService(BaseLLMService):
         )
         return extraction
 
-    # ── Private helpers ───────────────────────────────────────────────────
+    # ── Case summary narrative (Phase 5C) ─────────────────────────────────
 
+    def summarise_case(self, structured_summary: dict[str, Any]) -> str:
+        """Render the assembled structured summary as prose.
+
+        The model receives ONLY the structured summary — no raw patient answers —
+        so it cannot introduce history that the backend did not assemble. No
+        structured output is used here: the return value is free text that the
+        caller validates deterministically before storing.
+        """
+        start = time.monotonic()
+        payload = json.dumps(structured_summary, ensure_ascii=False, default=str)
+        if len(payload) > MAX_SUMMARY_PAYLOAD_CHARS:
+            payload = payload[:MAX_SUMMARY_PAYLOAD_CHARS]
+
+        user_content = (
+            "STRUCTURED CASE SUMMARY (authoritative — the only permitted source "
+            "of facts):\n"
+            "---BEGIN STRUCTURED DATA---\n"
+            f"{payload}\n"
+            "---END STRUCTURED DATA---\n\n"
+            "Render this as prose under the CURRENT CONSULTATION and PREVIOUS "
+            "HISTORY headings. Add nothing. Draw no connection between the two."
+        )
+
+        try:
+            response = self._llm.invoke([
+                SystemMessage(content=CASE_SUMMARY_SYSTEM_PROMPT),
+                HumanMessage(content=user_content),
+            ])
+        except Exception as exc:
+            self._log_failure("LLM case-summary call failed", start, exc)
+            raise LLMUnavailableError("LLM case-summary call failed") from exc
+
+        text = getattr(response, "content", response)
+        if isinstance(text, list):
+            parts = []
+            for part in text:
+                if isinstance(part, dict) and "text" in part:
+                    parts.append(part["text"])
+                else:
+                    parts.append(str(part))
+            text = "".join(parts)
+        if not isinstance(text, str) or not text.strip():
+            self._log_failure("LLM case-summary returned empty text", start, None)
+            raise LLMUnavailableError("LLM returned an empty case summary")
+
+        log.info(
+            "LLM case-summary success",
+            extra={
+                "model": self._model_name,
+                "prompt_version": PROMPT_VERSION,
+                "latency_ms": int((time.monotonic() - start) * 1000),
+                "narrative_chars": len(text),
+                "llm_success": True,
+                "fallback_used": False,
+            },
+        )
+        return text
+
+    # ── Private helpers ───────────────────────────────────────────────────
     def _log_failure(
         self,
         message: str,

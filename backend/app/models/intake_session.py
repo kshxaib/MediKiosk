@@ -12,12 +12,16 @@ from app.db.base import Base
 from app.db.mixins import TimestampMixin, UUIDPrimaryKeyMixin
 
 if TYPE_CHECKING:
+    from app.models.alert import Alert
     from app.models.answer import Answer
+    from app.models.case import Case
     from app.models.consent import Consent
     from app.models.department import Department
+    from app.models.document import Document
     from app.models.hospital import Hospital
     from app.models.medical_stream import MedicalStream
     from app.models.patient import Patient
+    from app.models.vital import Vital
 
 
 class SessionStatus(str, enum.Enum):
@@ -111,6 +115,26 @@ class IntakeSession(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         "Consent",
         back_populates="session",
         cascade="all, delete-orphan",
+    )
+    vitals: Mapped[list["Vital"]] = relationship(
+        "Vital",
+        back_populates="session",
+        cascade="all, delete-orphan",
+    )
+    alerts: Mapped[list["Alert"]] = relationship(
+        "Alert",
+        back_populates="session",
+        cascade="all, delete-orphan",
+    )
+    documents: Mapped[list["Document"]] = relationship(
+        "Document",
+        back_populates="session",
+    )
+    case: Mapped[Optional["Case"]] = relationship(
+        "Case",
+        back_populates="session",
+        cascade="all, delete-orphan",
+        uselist=False,
     )
 
     def __repr__(self) -> str:
