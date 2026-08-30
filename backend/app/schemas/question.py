@@ -31,6 +31,12 @@ class NextQuestionResponse(BaseModel):
     category: Optional[str] = None
     options: Optional[Any] = None
     sequence: Optional[int] = None
+    # Phase 5B (kiosk): read-only passthrough of the question's validation rules
+    # (e.g. {"min": 1, "max": 10}) so the touchscreen can render a correctly
+    # bounded numeric control instead of hard-coding a 1-10 scale. SEVERITY is
+    # 1-10 but the AYUSH sleep-hours question is 0-24. No clinical logic here —
+    # the backend still validates nothing differently.
+    validation_rules: Optional[dict[str, Any]] = None
     total_questions: int = 0
     completed_questions: int = 0
     is_last_question: bool = False

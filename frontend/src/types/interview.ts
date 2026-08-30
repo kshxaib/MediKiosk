@@ -7,6 +7,12 @@ export interface NextQuestion {
   category?: string | null
   options?: string[] | Record<string, unknown> | null
   sequence?: number | null
+  /**
+   * Question validation rules from the backend, e.g. `{ min: 1, max: 10 }`.
+   * Used by the kiosk to render a correctly bounded numeric control instead of
+   * hard-coding a scale.
+   */
+  validation_rules?: { min?: number; max?: number } | null
   total_questions: number
   completed_questions: number
   is_last_question: boolean

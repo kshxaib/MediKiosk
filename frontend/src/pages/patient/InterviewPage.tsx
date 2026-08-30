@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Container } from '../../components/Container'
+import { QuestionInput, type SubmittedAnswer } from '../../components/QuestionInput'
 import { usePatientStore, useSessionStore } from '../../stores'
 import type { NextQuestion } from '../../types'
 
@@ -30,8 +31,6 @@ export const InterviewPage: React.FC = () => {
   } = useSessionStore()
 
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([])
-  const [textAnswer, setTextAnswer] = useState('')
-  const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
   const [isAiThinking, setIsAiThinking] = useState(false)
@@ -89,19 +88,6 @@ export const InterviewPage: React.FC = () => {
 
   // Validate form state
   const qType = currentQuestion?.question_type || 'TEXT'
-  const isInputValid = () => {
-    if (submitting || isAiThinking) return false
-    if (qType === 'YES_NO' || qType === 'SINGLE_CHOICE') {
-      return Boolean(selectedOption)
-    }
-    if (qType === 'NUMBER') {
-      return textAnswer.trim().length > 0 && !isNaN(Number(textAnswer.trim()))
-    }
-    if (currentQuestion?.required) {
-      return textAnswer.trim().length > 0
-    }
-    return true
-  }
 
   const handleRetry = async () => {
     if (!currentSession) return
@@ -119,53 +105,20 @@ export const InterviewPage: React.FC = () => {
     }
   }
 
-  const handleSubmitAnswer = async () => {
+  const handleSubmitAnswer = async (answer: SubmittedAnswer) => {
     if (!currentSession || !currentQuestion || submitting || isAiThinking) return
     setErrorMessage(null)
 
-    let rawVal: string | null
-    let normVal: Record<string, unknown> | null
-
-    if (qType === 'YES_NO' || qType === 'SINGLE_CHOICE') {
-      if (!selectedOption) {
-        setErrorMessage('Please select an option to proceed.')
-        return
-      }
-      rawVal = selectedOption
-      normVal = { selected: selectedOption }
-    } else if (qType === 'NUMBER') {
-      if (!textAnswer.trim() || isNaN(Number(textAnswer))) {
-        setErrorMessage('Please enter a valid number.')
-        return
-      }
-      rawVal = textAnswer.trim()
-      normVal = { value: Number(textAnswer.trim()) }
-    } else {
-      if (currentQuestion.required && !textAnswer.trim()) {
-        setErrorMessage('Please enter your response to continue.')
-        return
-      }
-      rawVal = textAnswer.trim() || null
-      normVal = textAnswer.trim() ? { text: textAnswer.trim() } : null
-    }
-
     // Add patient response to chat history immediately
-    const userMsgText = rawVal || 'No response provided'
     setChatHistory((prev) => [
       ...prev,
       {
         id: `pat-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
         sender: 'patient',
-        text: userMsgText,
+        text: answer.raw,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
     ])
-
-    // Reset local inputs
-    const savedText = textAnswer
-    const savedOption = selectedOption
-    setTextAnswer('')
-    setSelectedOption(null)
 
     setSubmitting(true)
     setIsAiThinking(true)
@@ -174,8 +127,8 @@ export const InterviewPage: React.FC = () => {
       await submitAnswer(currentSession.id, {
         patient_id: currentPatient?.id,
         question_id: currentQuestion.question_id,
-        raw_answer: rawVal,
-        normalized_answer: normVal,
+        raw_answer: answer.raw,
+        normalized_answer: answer.normalized,
         answer_type: qType,
         source: 'TOUCH',
         // AI-generated follow-ups have no question_id; send the question text so
@@ -192,9 +145,6 @@ export const InterviewPage: React.FC = () => {
       }
     } catch {
       setErrorMessage('Something went wrong submitting your answer. Please tap Retry.')
-      // Restore previous entered input so patient does not have to retype
-      setTextAnswer(savedText)
-      setSelectedOption(savedOption)
     } finally {
       setSubmitting(false)
       setIsAiThinking(false)
@@ -216,19 +166,17 @@ export const InterviewPage: React.FC = () => {
     }
   }
 
-  const quickSuggestions = [
-    'Severe headache & fever',
-    'Stomach pain for 2 days',
-    'Dry cough & sore throat',
-    'Body ache and weakness',
-  ]
-
-  const severityScale = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
   const totalQ = currentQuestion?.total_questions || 5
   const completedCount = currentQuestion?.completed_questions || 0
   const progressPercent = Math.min(100, Math.round((completedCount / totalQ) * 100))
   const isCompleted = interviewCompleted || currentQuestion?.completed
+
+  // Remounting the answer control whenever the question changes is what
+  // guarantees the correct control is rendered for each question_type and that
+  // no draft from the previous question survives.
+  const inputKey = currentQuestion
+    ? `${currentQuestion.question_id ?? 'adhoc'}|${currentQuestion.question_type ?? 'TEXT'}|${currentQuestion.question ?? ''}`
+    : 'none'
 
   return (
     <Container className="py-6 max-w-3xl mx-auto">
@@ -375,167 +323,22 @@ export const InterviewPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          {/* INPUT: YES_NO */}
-          {qType === 'YES_NO' && (
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              {[
-                { label: 'YES', color: 'emerald' },
-                { label: 'NO', color: 'rose' },
-                { label: 'NOT SURE', color: 'slate' },
-              ].map((opt) => {
-                const isSelected = selectedOption === opt.label
-                return (
-                  <button
-                    key={opt.label}
-                    type="button"
-                    disabled={submitting || isAiThinking}
-                    onClick={() => {
-                      setSelectedOption(opt.label)
-                      setErrorMessage(null)
-                    }}
-                    className={`py-4 rounded-xl border-2 font-bold text-base transition-all cursor-pointer disabled:opacity-50 ${
-                      isSelected
-                        ? opt.color === 'emerald'
-                          ? 'border-emerald-600 bg-emerald-50 text-emerald-900 shadow-md ring-2 ring-emerald-500/20'
-                          : opt.color === 'rose'
-                          ? 'border-rose-600 bg-rose-50 text-rose-900 shadow-md ring-2 ring-rose-500/20'
-                          : 'border-slate-800 bg-slate-100 text-slate-900 shadow-md ring-2 ring-slate-500/20'
-                        : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700'
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                )
-              })}
-            </div>
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+          {/*
+            The answer control is chosen from the backend question_type and is
+            remounted per question via `inputKey`, so switching between
+            TEXT / NUMBER / YES_NO / SINGLE_CHOICE always renders the right
+            control and never leaves a previous draft behind.
+          */}
+          {currentQuestion && (
+            <QuestionInput
+              key={inputKey}
+              question={currentQuestion}
+              busy={submitting || isAiThinking || sessionLoading}
+              onSubmit={handleSubmitAnswer}
+              onDirty={() => setErrorMessage(null)}
+            />
           )}
-
-          {/* INPUT: SINGLE_CHOICE */}
-          {qType === 'SINGLE_CHOICE' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4">
-              {(Array.isArray(currentQuestion?.options)
-                ? currentQuestion.options
-                : ['Option A', 'Option B']
-              ).map((optStr: string) => {
-                const isSelected = selectedOption === optStr
-                return (
-                  <button
-                    key={optStr}
-                    type="button"
-                    disabled={submitting || isAiThinking}
-                    onClick={() => {
-                      setSelectedOption(optStr)
-                      setErrorMessage(null)
-                    }}
-                    className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all text-left cursor-pointer disabled:opacity-50 ${
-                      isSelected
-                        ? 'border-blue-600 bg-blue-50 text-blue-900 font-bold shadow-md ring-2 ring-blue-500/20'
-                        : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-800 font-medium'
-                    }`}
-                  >
-                    <span>{optStr}</span>
-                    <span
-                      className={`h-5 w-5 rounded-full border flex items-center justify-center text-xs shrink-0 ${
-                        isSelected
-                          ? 'border-blue-600 bg-blue-600 text-white font-bold'
-                          : 'border-slate-300 text-transparent'
-                      }`}
-                    >
-                      ✓
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
-          )}
-
-          {/* INPUT: NUMBER */}
-          {qType === 'NUMBER' && (
-            <div className="space-y-3 mb-4">
-              <input
-                type="number"
-                disabled={submitting || isAiThinking}
-                value={textAnswer}
-                onChange={(e) => {
-                  setTextAnswer(e.target.value)
-                  setErrorMessage(null)
-                }}
-                placeholder="Enter a number..."
-                className="w-full rounded-xl border-2 border-slate-300 px-4 py-3 text-xl font-mono font-bold text-slate-900 focus:border-blue-600 focus:outline-hidden disabled:bg-slate-100"
-              />
-              <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5">
-                {severityScale.map((val) => (
-                  <button
-                    key={val}
-                    type="button"
-                    disabled={submitting || isAiThinking}
-                    onClick={() => {
-                      setTextAnswer(val.toString())
-                      setErrorMessage(null)
-                    }}
-                    className={`py-2.5 rounded-lg border-2 font-bold text-xs transition cursor-pointer disabled:opacity-50 ${
-                      textAnswer === val.toString()
-                        ? 'border-blue-600 bg-blue-600 text-white shadow-sm'
-                        : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-800'
-                    }`}
-                  >
-                    {val}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* INPUT: TEXT / VOICE */}
-          {(qType === 'TEXT' || qType === 'VOICE' || (qType !== 'YES_NO' && qType !== 'SINGLE_CHOICE' && qType !== 'NUMBER')) && (
-            <div className="space-y-3 mb-4">
-              <textarea
-                rows={3}
-                disabled={submitting || isAiThinking}
-                value={textAnswer}
-                onChange={(e) => {
-                  setTextAnswer(e.target.value)
-                  setErrorMessage(null)
-                }}
-                placeholder="Type your response here..."
-                className="w-full rounded-xl border-2 border-slate-300 p-4 text-base text-slate-900 focus:border-blue-600 focus:outline-hidden leading-relaxed disabled:bg-slate-100"
-              />
-              <div className="flex flex-wrap gap-1.5 items-center">
-                <span className="text-[11px] font-bold text-slate-400 mr-1">Quick:</span>
-                {quickSuggestions.map((chip) => (
-                  <button
-                    key={chip}
-                    type="button"
-                    disabled={submitting || isAiThinking}
-                    onClick={() => {
-                      setTextAnswer((prev) => (prev ? `${prev}, ${chip}` : chip))
-                      setErrorMessage(null)
-                    }}
-                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer disabled:opacity-50"
-                  >
-                    + {chip}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Submit Button with Loading Spinner */}
-          <button
-            onClick={handleSubmitAnswer}
-            disabled={!isInputValid() || sessionLoading}
-            className="w-full rounded-xl bg-blue-600 py-3.5 text-base font-bold text-white shadow-md hover:bg-blue-500 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
-          >
-            {submitting || isAiThinking ? (
-              <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent inline-block" />
-                <span>Processing response...</span>
-              </>
-            ) : (
-              <span>Submit Response & Continue →</span>
-            )}
-          </button>
         </div>
       )}
     </Container>
